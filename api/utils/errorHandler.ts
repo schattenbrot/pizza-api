@@ -13,6 +13,21 @@ import logger from './logger';
  *         statusCode:
  *           type: number
  *           description: The status code of the error response.
+ *           example: 500
+ *         message:
+ *           type: string
+ *           description: The error message.
+ *         stack:
+ *           type: string
+ *           nullable: true
+ *           description: The error stack trace (available in development mode only).
+ *     ErrorNotFound:
+ *       type: object
+ *       properties:
+ *         statusCode:
+ *           type: number
+ *           description: The status code of the error response.
+ *           example: 404
  *         message:
  *           type: string
  *           description: The error message.
@@ -26,17 +41,15 @@ import logger from './logger';
  *         statusCode:
  *           type: number
  *           description: The status code of the error response.
+ *           example: 422
  *         message:
  *           type: string
- *           description: "err.msg: [err.location / err.path] (err.param)"
+ *           description: The error message.
+ *           example: 'Invalid value: [body / price] (undefined)'
  *         stack:
  *           type: string
  *           nullable: true
  *           description: The error stack trace (available in development mode only).
- *       example:
- *         statusCode: 422
- *         message: 'Invalid value: [body / price] (undefined)'
- *         stack: string
  */
 
 const errorHandler = (

@@ -12,16 +12,10 @@ const router = Router();
 
 /**
  * @swagger
- * /pizza/{id}:
+ * /pizza:
  *   post:
  *     summary: Create a new Pizza
  *     tags: [Pizza]
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: string
  *     requestBody:
  *       description: Pizza object to be created
  *       required: true
@@ -81,7 +75,7 @@ router.post(
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/ErrorResponse'
+ *               $ref: '#/components/schemas/ErrorNotFound'
  *       '500':
  *         description: Internal server error
  *         content:
@@ -118,7 +112,7 @@ router.get('/', getAllPizzas);
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/ErrorResponse'
+ *               $ref: '#/components/schemas/ErrorNotFound'
  *       '422':
  *         description: Invalid value or input
  *         content:
@@ -160,6 +154,10 @@ router.get(
  *         application/json:
  *           schema:
  *             $ref: '#/components/schemas/Pizza'
+ *           example:
+ *             name: Salami
+ *             image: salami.png
+ *             price: 6.99
  *     responses:
  *       '200':
  *         description: Successful operation
@@ -172,7 +170,7 @@ router.get(
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/ErrorResponse'
+ *               $ref: '#/components/schemas/ErrorNotFound'
  *       '422':
  *         description: Invalid value or input
  *         content:
@@ -225,7 +223,7 @@ router.put(
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/ErrorResponse'
+ *               $ref: '#/components/schemas/ErrorNotFound'
  *       '422':
  *         description: Unprocessable Entity
  *         content:

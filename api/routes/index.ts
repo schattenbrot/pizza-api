@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import pizzaRoutes from './pizza.routes';
+import createHttpError from 'http-errors';
 
 const router = Router();
 
@@ -10,7 +11,7 @@ router.get('/', (req, res) => {
 router.use('/pizza', pizzaRoutes);
 
 router.use((req, res, next) => {
-  res.status(404).send('<h1>Page not found</h1>');
+  next(createHttpError(404, `Page ${req.path} not found`));
 });
 
 export default router;
