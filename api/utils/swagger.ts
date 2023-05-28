@@ -13,7 +13,11 @@ const options: swaggerJSDoc.Options = {
       version,
       description: 'A REST API for a simple Pizza-Service',
     },
-    servers: [`${SERVER}:${PORT}`],
+    servers: [
+      {
+        url: `http://${SERVER}:${PORT}/api`,
+      },
+    ],
   },
   apis: ['./api/routes/*.ts', './api/models/*.ts'],
 };

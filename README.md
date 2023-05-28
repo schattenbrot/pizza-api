@@ -36,11 +36,7 @@ During production the docs will be on the server at the same path `/docs`.
 
 ## Contributing
 
-Not much to contribute but the swagger documentatin itself and tests.
-
-Problems:
-
-- Swagger schemas are not working properly and I don't know how to fix that.
+Not much to contribute but the swagger documentation itself and tests.
 
 ## License
 
