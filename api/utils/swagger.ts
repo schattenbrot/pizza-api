@@ -7,10 +7,11 @@ import { PORT, SERVER } from './environment';
 
 const options: swaggerJSDoc.Options = {
   definition: {
-    openai: '3.0.0',
+    openapi: '3.0.0',
     info: {
-      title: 'REST API Documentation',
+      title: 'Pizza API',
       version,
+      description: 'A REST API for a simple Pizza-Service',
     },
     servers: [`${SERVER}:${PORT}`],
   },

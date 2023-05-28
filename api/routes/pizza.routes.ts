@@ -9,23 +9,6 @@ import {
 import validators from '../validators';
 
 const router = Router();
-/**
- * components:
- *   schemas:
- *     Pizza:
- *       type: object
- *       properties:
- *         name:
- *           type: string
- *         image:
- *           type: string
- *         price:
- *           type: number
- *       required:
- *         - name
- *         - image
- *         - price
- */
 
 /**
  * @swagger

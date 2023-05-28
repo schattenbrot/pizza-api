@@ -7,6 +7,27 @@ export type Pizza = {
   price: number;
 };
 
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Pizza:
+ *       type: object
+ *       properties:
+ *         _id:
+ *           type: string
+ *         name:
+ *           type: string
+ *         image:
+ *           type: string
+ *         price:
+ *           type: number
+ *       required:
+ *         - name
+ *         - image
+ *         - price
+ */
+
 const pizzaSchema = new Schema({
   name: {
     type: String,
