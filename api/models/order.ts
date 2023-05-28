@@ -26,6 +26,21 @@ export type Order = {
   pizzas: OrderedPizza[];
 };
 
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     OrderedPizza:
+ *       type: object
+ *       properties:
+ *         pizza:
+ *           type: string
+ *           description: The ID of the pizza (referenced from the 'Pizza' model).
+ *         status:
+ *           type: string
+ *           description: The status of the ordered pizza (should match the 'PizzaStatus' enum).
+ */
+
 const orderedPizzaSchema = new Schema({
   pizza: {
     type: Schema.Types.ObjectId,
@@ -36,6 +51,29 @@ const orderedPizzaSchema = new Schema({
     enum: PizzaStatus,
   },
 });
+
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Order:
+ *       type: object
+ *       properties:
+ *         customer:
+ *           type: object
+ *           properties:
+ *             name:
+ *               type: string
+ *               description: The name of the customer.
+ *             address:
+ *               type: string
+ *               description: The address of the customer.
+ *         orderedPizzas:
+ *           type: array
+ *           items:
+ *             type: string
+ *             description: An array of ordered pizza IDs (referenced from the 'OrderedPizza' model).
+ */
 
 const orderSchema = new Schema({
   customer: {

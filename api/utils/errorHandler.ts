@@ -3,6 +3,42 @@ import { HttpError } from 'http-errors';
 import { NODE_ENV } from './environment';
 import logger from './logger';
 
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     ErrorResponse:
+ *       type: object
+ *       properties:
+ *         statusCode:
+ *           type: number
+ *           description: The status code of the error response.
+ *         message:
+ *           type: string
+ *           description: The error message.
+ *         stack:
+ *           type: string
+ *           nullable: true
+ *           description: The error stack trace (available in development mode only).
+ *     ErrorUnprocessableEntity:
+ *       type: object
+ *       properties:
+ *         statusCode:
+ *           type: number
+ *           description: The status code of the error response.
+ *         message:
+ *           type: string
+ *           description: "err.msg: [err.location / err.path] (err.param)"
+ *         stack:
+ *           type: string
+ *           nullable: true
+ *           description: The error stack trace (available in development mode only).
+ *       example:
+ *         statusCode: 422
+ *         message: 'Invalid value: [body / price] (undefined)'
+ *         stack: string
+ */
+
 const errorHandler = (
   err: HttpError,
   req: Request,
