@@ -36,7 +36,10 @@ During production the docs will be on the server at the same path `/docs`.
 
 ## Contributing
 
-Not much to contribute but the swagger documentation itself and tests.
+- Testing (unit tests? and postman/thunder client tests)
+- CORS middleware
+- Dockerfile
+- Example .env file
 
 ## License
 
