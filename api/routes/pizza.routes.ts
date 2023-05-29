@@ -15,7 +15,8 @@ const router = Router();
  * /pizza:
  *   post:
  *     summary: Create a new Pizza
- *     tags: [Pizza]
+ *     tags:
+ *       - Pizza
  *     requestBody:
  *       description: Pizza object to be created
  *       required: true

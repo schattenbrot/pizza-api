@@ -35,10 +35,17 @@ export type Order = {
  *       properties:
  *         pizza:
  *           type: string
- *           description: The ID of the pizza (referenced from the 'Pizza' model).
+ *           description: The ID of the Pizza.
+ *           format: ObjectId
  *         status:
  *           type: string
- *           description: The status of the ordered pizza (should match the 'PizzaStatus' enum).
+ *           enum:
+ *             - ordered
+ *             - oven
+ *             - ready
+ *             - delivering
+ *             - done
+ *           description: The status of the ordered pizza.
  */
 
 const orderedPizzaSchema = new Schema({
@@ -71,10 +78,10 @@ const orderedPizzaSchema = new Schema({
  *         orderedPizzas:
  *           type: array
  *           items:
- *             type: string
- *             description: An array of ordered pizza IDs (referenced from the 'OrderedPizza' model).
+ *             $ref: '#/components/schemas/OrderedPizza'
+ *       required:
+ *         - customer
  */
-
 const orderSchema = new Schema({
   customer: {
     name: {
