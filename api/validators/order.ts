@@ -5,26 +5,12 @@ import { OrderedPizza, PizzaStatus } from '../models/order';
 export const createOrder = [
   body('customer.name').notEmpty().isString(),
   body('customer.address').notEmpty().isString(),
-  body('orderedPizzas')
+  body('pizzas')
     .exists()
     .isArray({ min: 1 })
     .custom(value => {
-      // Custom validation to check each OrderedPizza object in the array
-      const isValidPizzas = value.every((orderedPizza: OrderedPizza) => {
-        return (
-          typeof orderedPizza.pizza === 'object' &&
-          isValidObjectId(orderedPizza.pizza._id) &&
-          typeof orderedPizza.pizza.name === 'string' &&
-          typeof orderedPizza.pizza.image === 'string' &&
-          typeof orderedPizza.pizza.price === 'number' &&
-          typeof orderedPizza.status === 'string' &&
-          Object.values(PizzaStatus).includes(
-            orderedPizza.status as PizzaStatus
-          )
-        );
-      });
-      if (!isValidPizzas) {
-        throw new Error('Invalid pizzas array');
+      if (!value.every((item: string) => isValidObjectId(item))) {
+        throw new Error('Invalid ObjectId');
       }
       return true;
     }),
@@ -52,25 +38,12 @@ export const updateOrder = [
     }),
   body('customer.name').notEmpty().isString(),
   body('customer.address').notEmpty().isString(),
-  body('orderedPizzas')
+  body('pizzas')
     .exists()
     .isArray({ min: 1 })
     .custom(value => {
-      // Custom validation to check each OrderedPizza object in the array
-      const isValidPizzas = value.every((orderedPizza: OrderedPizza) => {
-        return (
-          typeof orderedPizza.pizza === 'object' &&
-          isValidObjectId(orderedPizza.pizza._id) &&
-          typeof orderedPizza.pizza.name === 'string' &&
-          typeof orderedPizza.pizza.image === 'string' &&
-          typeof orderedPizza.pizza.price === 'number' &&
-          Object.values(PizzaStatus).includes(
-            orderedPizza.status as PizzaStatus
-          )
-        );
-      });
-      if (!isValidPizzas) {
-        throw new Error('Invalid pizzas array');
+      if (!value.every((item: string) => isValidObjectId(item))) {
+        throw new Error('Invalid ObjectId');
       }
       return true;
     }),
@@ -96,7 +69,10 @@ export const updateOrderedPizzaStatus = [
       }
       return true;
     }),
-  body('status').custom(value => {
-    Object.values(PizzaStatus).includes(value as PizzaStatus);
-  }),
+  body('index').exists().isNumeric(),
+  body('status')
+    .exists()
+    .custom(value => {
+      return Object.values(PizzaStatus).includes(value as PizzaStatus);
+    }),
 ];

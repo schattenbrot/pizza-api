@@ -1,21 +1,64 @@
 import { RequestHandler } from 'express';
 import OrderSchema, {
   Order,
-  OrderedPizzaSchema,
+  OrderedPizza,
+  OrderedPizzaModel,
   PizzaStatus,
 } from '../models/order';
 import createHttpError from 'http-errors';
+import orderService from '../services/order';
+import pizzaService from '../services/pizza';
+import { Pizza } from '../models/pizza';
 
-export const createOrder: RequestHandler<{}, any, Order> = async (
+type OrderInput = {
+  customer: {
+    name: string;
+    address: string;
+  };
+  pizzas: string[];
+};
+
+export const createOrder: RequestHandler<{}, any, OrderInput> = async (
   req,
   res,
   next
 ) => {
-  const order = req.body;
+  const orderInput = req.body;
+  const updatedPizzas: Pizza[] = [];
+
+  for (const pizzaId of orderInput.pizzas) {
+    try {
+      const pizza = await pizzaService.getPizzaById(pizzaId);
+      if (pizza) {
+        updatedPizzas.push({
+          _id: pizzaId,
+          name: pizza.name,
+          image: pizza.image,
+          price: pizza.price,
+        });
+      }
+    } catch (err) {
+      // ignore errors
+    }
+  }
+
+  if (!updatedPizzas.length) {
+    return next(createHttpError(404, 'Pizzas not found'));
+  }
+
   try {
-    const newOrder = new OrderSchema(order);
-    const response = await newOrder.save();
-    res.status(201).json(response);
+    const newOrder: Order = {
+      customer: orderInput.customer,
+      pizzas: updatedPizzas.map(pizza => {
+        return {
+          pizza,
+          status: PizzaStatus.ordered,
+        };
+      }),
+    };
+
+    const order = await orderService.createOrder(newOrder);
+    res.status(201).json(order);
   } catch (err: any) {
     next(createHttpError(500, 'Internal Server Error', err));
   }
@@ -23,8 +66,8 @@ export const createOrder: RequestHandler<{}, any, Order> = async (
 
 export const getAllOrders: RequestHandler = async (req, res, next) => {
   try {
-    const orders = await OrderSchema.find();
-    if (!orders) return next(createHttpError(404, 'Orders not found'));
+    const orders = await orderService.getAllOrders();
+    if (!orders.length) return next(createHttpError(404, 'Orders not found'));
     res.json(orders);
   } catch (err: any) {
     next(createHttpError(500, 'Internal Server Error', err));
@@ -38,7 +81,7 @@ export const getOrderById: RequestHandler<{ id: string }> = async (
 ) => {
   const orderId = req.params.id;
   try {
-    const order = await OrderSchema.findById(orderId);
+    const order = await orderService.getOrderById(orderId);
     if (!order) return next(createHttpError(404, 'Order not found'));
     res.json(order);
   } catch (err: any) {
@@ -49,16 +92,65 @@ export const getOrderById: RequestHandler<{ id: string }> = async (
 export const updateOrderById: RequestHandler<
   { id: string },
   any,
-  Order
+  OrderInput
 > = async (req, res, next) => {
   const orderId = req.params.id;
-  const updatedOrder = req.body;
+  const updatedOrderInput = req.body;
+
+  const updatedPizzas: Pizza[] = [];
+  for (const pizzaId of updatedOrderInput.pizzas) {
+    try {
+      const pizza = await pizzaService.getPizzaById(pizzaId);
+      if (pizza) {
+        updatedPizzas.push({
+          _id: pizzaId,
+          name: pizza.name,
+          image: pizza.image,
+          price: pizza.price,
+        });
+      }
+    } catch (err) {
+      //ignore error
+    }
+  }
+  if (!updatedPizzas.length) {
+    return next(createHttpError(404, 'Pizzas not found'));
+  }
+
   try {
-    const order = await OrderSchema.findByIdAndUpdate(orderId, updatedOrder, {
-      new: true,
-    });
+    const updatedOrder: Order = {
+      customer: updatedOrderInput.customer,
+      pizzas: updatedPizzas.map(pizza => {
+        return {
+          pizza,
+          status: PizzaStatus.ordered,
+        };
+      }),
+    };
+
+    const order = await orderService.updateOrderById(orderId, updatedOrder);
     if (!order) return next(createHttpError(404, 'Order not found'));
-    res.json(order);
+    res.status(200).json(order);
+  } catch (err: any) {
+    next(createHttpError(500, 'Internal Server Error', err));
+  }
+};
+
+export const updateOrderedPizzaStatusById: RequestHandler<
+  { id: string },
+  any,
+  { index: number; status: PizzaStatus }
+> = async (req, res, next) => {
+  const orderId = req.params.id;
+  const { index, status } = req.body;
+  try {
+    const orderedPizza = await orderService.updateOrderedPizzaStatusById(
+      orderId,
+      index,
+      status
+    );
+    if (!orderedPizza) return next(createHttpError(404, 'Order not found'));
+    res.json(orderedPizza);
   } catch (err: any) {
     next(createHttpError(500, 'Internal Server Error', err));
   }
@@ -71,30 +163,9 @@ export const deleteOrderById: RequestHandler<{ id: string }> = async (
 ) => {
   const orderId = req.params.id;
   try {
-    const order = await OrderSchema.findByIdAndDelete(orderId);
+    const order = await orderService.deleteOrderById(orderId);
     if (!order) return next(createHttpError(404, 'Order not found'));
     res.json({ message: 'Order deleted successfully' });
-  } catch (err: any) {
-    next(createHttpError(500, 'Internal Server Error', err));
-  }
-};
-
-export const updateOrderedPizzaStatusById: RequestHandler<
-  { id: string },
-  any,
-  { status: PizzaStatus }
-> = async (req, res, next) => {
-  const orderedPizzaId = req.params.id;
-  const updatedOrderedPizza = req.body;
-  try {
-    const orderedPizza = await OrderedPizzaSchema.findByIdAndUpdate(
-      orderedPizzaId,
-      updatedOrderedPizza,
-      { new: true }
-    );
-    if (!orderedPizza)
-      return next(createHttpError(404, 'OrderedPizza not found'));
-    res.json(orderedPizza);
   } catch (err: any) {
     next(createHttpError(500, 'Internal Server Error', err));
   }

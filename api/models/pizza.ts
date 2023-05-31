@@ -28,7 +28,7 @@ export type Pizza = {
  *         - price
  */
 
-const pizzaSchema = new Schema({
+export const PizzaSchema = new Schema({
   name: {
     type: String,
     required: true,
@@ -43,4 +43,4 @@ const pizzaSchema = new Schema({
   },
 });
 
-export default model('Pizza', pizzaSchema);
+export default model('Pizza', PizzaSchema);

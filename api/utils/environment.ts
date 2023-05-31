@@ -1,4 +1,5 @@
-import 'dotenv/config';
+// import 'dotenv/config';
+import logger from './logger';
 
 type Env = 'production' | 'development';
 
@@ -42,5 +43,7 @@ if (DATABASE_USER && DATABASE_PASSWORD) {
     DATABASE_PASSWORD,
   };
 }
+
+logger.info(`The server is running with current configuration: ${NODE_ENV}`);
 
 export default environment;

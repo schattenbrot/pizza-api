@@ -33,7 +33,7 @@ const swaggerDocs = (app: Express) => {
   app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
   // Docs in JSON format
-  app.get('docs.json', (req, res) => {
+  app.get('/docs.json', (req, res) => {
     res.json(swaggerSpec);
   });
 

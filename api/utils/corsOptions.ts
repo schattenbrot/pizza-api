@@ -1,4 +1,3 @@
-import cors from 'cors';
 import { NODE_ENV, SERVER } from './environment';
 import logger from './logger';
 

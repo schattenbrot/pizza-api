@@ -23,7 +23,25 @@ const router = Router();
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/Order'
+ *             type: object
+ *             properties:
+ *               customer:
+ *                 type: object
+ *                 properties:
+ *                   name:
+ *                     type: string
+ *                     description: The name of the customer.
+ *                   address:
+ *                     type: string
+ *                     description: The address of the customer.
+ *               orderedPizzas:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *                   description: The ID of the pizza.
+ *                   format: OrderId
+ *             required:
+ *               - customer
  *     responses:
  *       '201':
  *         description: Successful operation
@@ -206,8 +224,10 @@ router.put(
  *           schema:
  *             type: object
  *             properties:
+ *               index:
+ *                 type: number
  *               status:
- *                 type: string
+ *                 type: number
  *                 enum:
  *                   - ordered
  *                   - oven
@@ -295,3 +315,5 @@ router.delete(
   validators.validate,
   deleteOrderById
 );
+
+export default router;

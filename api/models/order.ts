@@ -1,5 +1,5 @@
-import { Schema, model } from 'mongoose';
-import { Pizza } from './pizza';
+import { Schema, Types, model } from 'mongoose';
+import { Pizza, PizzaSchema } from './pizza';
 
 export enum PizzaStatus {
   ordered,
@@ -33,10 +33,12 @@ export type Order = {
  *     OrderedPizza:
  *       type: object
  *       properties:
- *         pizza:
+ *         _id:
  *           type: string
- *           description: The ID of the Pizza.
+ *           description: The ID of the ordered pizz.
  *           format: ObjectId
+ *         pizza:
+ *           $ref: '#/components/schemas/Pizza'
  *         status:
  *           type: string
  *           enum:
@@ -48,11 +50,8 @@ export type Order = {
  *           description: The status of the ordered pizza.
  */
 
-const orderedPizzaSchema = new Schema({
-  pizza: {
-    type: Schema.Types.ObjectId,
-    ref: 'Pizza',
-  },
+export const OrderedPizzaSchema = new Schema({
+  pizza: PizzaSchema,
   status: {
     type: String,
     enum: PizzaStatus,
@@ -66,6 +65,10 @@ const orderedPizzaSchema = new Schema({
  *     Order:
  *       type: object
  *       properties:
+ *         _id:
+ *           type: string
+ *           description: The ID of the order.
+ *           format: ObjectId
  *         customer:
  *           type: object
  *           properties:
@@ -75,14 +78,14 @@ const orderedPizzaSchema = new Schema({
  *             address:
  *               type: string
  *               description: The address of the customer.
- *         orderedPizzas:
+ *         pizzas:
  *           type: array
  *           items:
  *             $ref: '#/components/schemas/OrderedPizza'
  *       required:
  *         - customer
  */
-const orderSchema = new Schema({
+const OrderSchema = new Schema({
   customer: {
     name: {
       type: String,
@@ -91,14 +94,28 @@ const orderSchema = new Schema({
       type: String,
     },
   },
-  orderedPizzas: [
+  pizzas: [
     {
-      type: Schema.Types.ObjectId,
-      ref: 'OrderedPizza',
+      pizza: {
+        _id: Types.ObjectId,
+        name: {
+          type: String,
+        },
+        image: {
+          type: String,
+        },
+        price: {
+          type: Number,
+        },
+      },
+      status: {
+        type: Number,
+        enum: PizzaStatus,
+      },
     },
   ],
 });
 
-export const OrderedPizzaSchema = model('OrderedPizza', orderedPizzaSchema);
+export const OrderedPizzaModel = model('OrderedPizza', OrderedPizzaSchema);
 
-export default model('Order', orderSchema);
+export default model('Order', OrderSchema);

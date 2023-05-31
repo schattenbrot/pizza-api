@@ -63,9 +63,9 @@ const errorHandler = (
       NODE_ENV === 'development' ? ` ${err.stack}` : ''
     }`
   );
-  res.status(err.status || 500).json({
-    statusCode: err.status || 500,
-    message: err.message,
+  res.status(err.status).json({
+    statusCode: err.status,
+    message: err.status !== 500 ? err.message : 'InternalServerError',
     stack: NODE_ENV === 'development' ? err.stack : undefined,
   });
 };
