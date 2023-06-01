@@ -13,7 +13,12 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: ArtiomTr/jest-coverage-report-action@v2
+        id: coverage
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           package-manager: yarn
           test-script: yarn test
+          output: comment, report-markdown
+      - name: Create test-coverage.md file
+        run: |
+          echo '${{ steps.coverage.outputs.report }}' > test-coverage.md

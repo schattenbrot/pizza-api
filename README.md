@@ -50,6 +50,10 @@ The routes are documented using swagger which can be found using the following U
 
 During production the docs will be on the server at the same path `/docs`.
 
+## Tests
+
+The latest testreport can be found [here](test-coverage.md).
+
 ## Contributing / TODO
 
 - Testing (unit tests? and postman/thunder client tests)
