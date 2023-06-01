@@ -24,7 +24,6 @@ jobs:
           echo '${{ steps.coverage.outputs.report }}' > test-coverage.md
       - name: Commit and push test-coverage.md
         run: |
-          git checkout main
           git add test-coverage.md
           git commit -m "Add test coverage report"
           git push origin main
