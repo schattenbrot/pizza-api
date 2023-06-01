@@ -21,4 +21,4 @@ jobs:
           output: comment, report-markdown
       - name: Create test-coverage.md file
         run: |
-          echo "${{ steps.coverage.outputs.report }}" > test-coverage.md
+          echo '${{ steps.coverage.outputs.report }}' > test-coverage.md
