@@ -19,8 +19,8 @@ jobs:
       #     test-script: yarn test
       #     output: comment, report-markdown
       - uses: actions/checkout@v3
-        # with:
-        #   ref: ${{ github.event.pull_request.head.ref }}
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
       - name: Create test-coverage.md file
         run: |
           echo $(date) > test-coverage2.md
@@ -31,7 +31,6 @@ jobs:
         run: |
           git config --global user.name "Pizza-API Continuous Integration"
           git config --global user.email "schattenbrot@users.noreply.github.com"
-          git pull origin main
           git add test-coverage2.md
           git commit -m "Add test coverage report"
           git push origin main
