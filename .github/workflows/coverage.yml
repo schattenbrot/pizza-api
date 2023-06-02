@@ -11,24 +11,26 @@ jobs:
   coverage:
     runs-on: ubuntu-latest
     steps:
+      # - uses: actions/checkout@v3
+      # - uses: ArtiomTr/jest-coverage-report-action@v2
+      #   id: coverage
+      #   with:
+      #     package-manager: yarn
+      #     test-script: yarn test
+      #     output: comment, report-markdown
       - uses: actions/checkout@v3
-      - uses: ArtiomTr/jest-coverage-report-action@v2
-        id: coverage
         with:
-          package-manager: yarn
-          test-script: yarn test
-          output: comment, report-markdown
-      - uses: actions/checkout@v3
-        with:
-          ref: ${{ github.event.pull_request.head.sha }}
+          ref: ${{ github.event.pull_request.head.ref }}
       - name: Create test-coverage.md file
         run: |
-          echo '${{ steps.coverage.outputs.report }}' > test-coverage.md
+          echo $(date) > test-coverage2.md
+      # - name: Create test-coverage.md file
+      #   run: |
+      #     echo '${{ steps.coverage.outputs.report }}' > test-coverage.md
       - name: Commit and push test-coverage.md
         run: |
           git config --global user.name "Pizza-API Continuous Integration"
           git config --global user.email "schattenbrot@users.noreply.github.com"
-          git pull
           git add test-coverage.md
           git commit -m "Add test coverage report"
           git push origin main
