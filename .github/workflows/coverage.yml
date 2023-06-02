@@ -30,6 +30,7 @@ jobs:
           echo '${{ steps.coverage.outputs.report }}' > test-coverage.md
       - name: Commit and push test-coverage.md
         run: |
+          echo 'data'
           echo "${ GITHUB_ACTOR }"
           echo "${{ GITHUB_ACTOR }}"
           git config --global user.name "Pizza-API Continuous Integration"
