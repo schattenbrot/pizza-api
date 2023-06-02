@@ -25,7 +25,7 @@ jobs:
         run: |
           git config --global user.name "Pizza-API Continuous Integration"
           git config --global user.email "schattenbrot@users.noreply.github.com"
-          git status
+          git pull
           git add test-coverage.md
           git commit -m "Add test coverage report"
-          git push origin HEAD:main
+          git push origin main
