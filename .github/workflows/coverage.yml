@@ -12,9 +12,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-        with:
-          ref: ${{ github.event.pull_request.head.ref }}
-          fetch-depth: 0
       - uses: ArtiomTr/jest-coverage-report-action@v2
         id: coverage
         with:
@@ -32,4 +29,4 @@ jobs:
           git status
           git add test-coverage.md
           git commit -m "Add test coverage report"
-          git push -u origin main
+          git push
