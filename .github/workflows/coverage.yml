@@ -1,8 +1,5 @@
 name: 'coverage'
 on:
-  push:
-    branches:
-      - dev
   pull_request:
     branches:
       - main
@@ -28,12 +25,6 @@ jobs:
       - name: Create test-coverage.md file
         run: |
           echo '${{ steps.coverage.outputs.report }}' > test-coverage.md
-      # - name: Check write access
-      #   run: |
-      #     if [[ "${{ github.event.repository.permissions.push }}" != "true" ]]; then
-      #       echo "This workflow can only be triggered by users with write access."
-      #       exit 1
-      #     fi
       - name: Commit and push test-coverage.md
         run: |
           git config --global user.name "Pizza-API Continuous Integration"
