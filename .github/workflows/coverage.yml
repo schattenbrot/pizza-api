@@ -15,7 +15,6 @@ jobs:
       - uses: ArtiomTr/jest-coverage-report-action@v2
         id: coverage
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
           package-manager: yarn
           test-script: yarn test
           output: comment, report-markdown
@@ -29,4 +28,4 @@ jobs:
           git status
           git add test-coverage.md
           git commit -m "Add test coverage report"
-          git push
+          git push origin HEAD:main
