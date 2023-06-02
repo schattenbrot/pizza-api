@@ -16,6 +16,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
+          ref: ${{ github.event.pull_request.head.ref }}
           fetch-depth: 0
       - uses: ArtiomTr/jest-coverage-report-action@v2
         id: coverage
@@ -29,7 +30,9 @@ jobs:
           echo '${{ steps.coverage.outputs.report }}' > test-coverage.md
       - name: Commit and push test-coverage.md
         run: |
-          git config --global user.name "${{ GITHUB_ACTOR }}"
+          echo "${ GITHUB_ACTOR }"
+          echo "${{ GITHUB_ACTOR }}"
+          git config --global user.name "Pizza-API Continuous Integration"
           git config --global user.email "${{ GITHUB_ACTOR }}@users.noreply.github.com"
           git add test-coverage.md
           git commit -m "Add test coverage report"
