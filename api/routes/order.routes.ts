@@ -34,7 +34,7 @@ const router = Router();
  *                   address:
  *                     type: string
  *                     description: The address of the customer.
- *               orderedPizzas:
+ *               pizzas:
  *                 type: array
  *                 items:
  *                   type: string
