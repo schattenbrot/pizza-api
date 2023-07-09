@@ -4,7 +4,7 @@ import logger from './logger';
 const origin = CORS_ORIGIN;
 
 const corsOptions = {
-  origin: '*',
+  origin,
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Origin', 'Content-Type', 'Authorization'],
   exposedHeaders: ['Content-Length'],

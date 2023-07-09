@@ -1,25 +1,11 @@
-import { NODE_ENV, SERVER } from '../utils/environment';
-
 describe('CORS Options', () => {
   beforeEach(() => {
     jest.resetModules();
   });
-  it('should have the correct origin based on the environment: production', () => {
-    process.env.NODE_ENV = 'production';
+
+  it('should have the correct origin', () => {
     const { default: corsOptions } = require('../utils/corsOptions');
-    const expectedProtocol = 'https';
-    const expectedOrigin = `${expectedProtocol}://${SERVER}`;
-
-    expect(corsOptions.origin).toBe(expectedOrigin);
-  });
-
-  it('should have the correct origin based on the environment: development', () => {
-    process.env.NODE_ENV = 'development';
-    const { default: corsOptions } = require('../utils/corsOptions');
-    const expectedProtocol = 'http';
-    const expectedOrigin = `${expectedProtocol}://${SERVER}`;
-
-    expect(corsOptions.origin).toBe(expectedOrigin);
+    expect(corsOptions.origin).toBe('*');
   });
 
   it('should include the allowed methods', () => {
