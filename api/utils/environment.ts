@@ -7,6 +7,7 @@ type Environment = {
   NODE_ENV: Env;
   SERVER: string;
   PORT: number;
+  CORS_ORIGIN: string;
   DATABASE_PROTOCOL: string;
   DATABASE_URL: string;
   DATABASE_PORT: number;
@@ -20,6 +21,7 @@ type Environment = {
 export const SERVER = process.env.SERVER ?? 'localhost';
 export const NODE_ENV = (process.env.NODE_ENV as Env) ?? 'development';
 export const PORT = parseInt(process.env.PORT ?? '8080');
+export const CORS_ORIGIN = process.env.CORS_ORIGIN ?? '*';
 export const DATABASE_PROTOCOL = process.env.DATABASE_PROTOCOL ?? 'mongodb';
 export const DATABASE_URL = process.env.DATABASE_URL ?? 'localhost';
 export const DATABASE_PORT = parseInt(process.env.DATABASE_PORT ?? '27017');
@@ -31,6 +33,7 @@ const environment: Environment = {
   NODE_ENV,
   SERVER,
   PORT,
+  CORS_ORIGIN,
   DATABASE_PROTOCOL,
   DATABASE_URL,
   DATABASE_PORT,

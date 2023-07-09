@@ -17,6 +17,7 @@ Customizing the server is possible using a `.env` file.
 | SERVER            | yes      | string | `localhost`   | The server address. Also used for CORS requests                                                                                          |
 | NODE_ENV          | yes      | string | `development` | The server node env. Adds more detailed error logging to the terminal and sets CORS protocol. Can only be `development` or `production`. |
 | PORT              | yes      | number | `8080`        | The port number that the server is listening on.                                                                                         |
+| CORS_ORIGIN       | yes      | string | `*`           | The origin for the cors middleware.                                                                                                      |
 | DATABASE_PROTOCOL | yes      | string | `mongodb`     | The database connection protocol.                                                                                                        |
 | DATABASE_URL      | yes      | string | `localhost`   | The database connection url.                                                                                                             |
 | DATABASE_PORT     | yes      | number | `27017`       | The database connection port.                                                                                                            |

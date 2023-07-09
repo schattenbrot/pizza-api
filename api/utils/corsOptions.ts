@@ -1,8 +1,7 @@
-import { NODE_ENV, SERVER } from './environment';
+import { CORS_ORIGIN } from './environment';
 import logger from './logger';
 
-const protocol = NODE_ENV === 'production' ? 'https' : 'http';
-const origin = `${protocol}://${SERVER}`;
+const origin = CORS_ORIGIN;
 
 const corsOptions = {
   origin,
