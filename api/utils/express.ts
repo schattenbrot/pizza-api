@@ -6,6 +6,7 @@ import corsOptions from './corsOptions';
 import errorHandler from './errorHandler';
 import swaggerDocs from './swagger';
 import createHttpError from 'http-errors';
+import 'express-async-errors';
 
 const app = express();
 

@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import 'express-async-errors';
 import {
   createPizza,
   deletePizzaById,

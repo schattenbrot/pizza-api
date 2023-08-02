@@ -1,25 +1,25 @@
-import PizzaModel, { Pizza } from '../models/pizza';
+import { Pizza, IPizza } from '../models/pizza';
 
-const createPizza = async (pizza: Pizza) => {
-  return await PizzaModel.create(pizza);
+const createPizza = async (pizza: IPizza) => {
+  return Pizza.create(pizza);
 };
 
 const getAllPizzas = async () => {
-  return await PizzaModel.find();
+  return Pizza.find();
 };
 
 const getPizzaById = async (pizzaId: string) => {
-  return await PizzaModel.findById(pizzaId);
+  return Pizza.findById(pizzaId);
 };
 
-const updatePizzaById = async (pizzaId: string, updatedPizza: Pizza) => {
-  return await PizzaModel.findByIdAndUpdate(pizzaId, updatedPizza, {
+const updatePizzaById = async (pizzaId: string, updatedPizza: IPizza) => {
+  return Pizza.findByIdAndUpdate(pizzaId, updatedPizza, {
     new: true,
   });
 };
 
 const deletePizzaById = async (pizzaId: string) => {
-  return await PizzaModel.findByIdAndDelete(pizzaId);
+  return Pizza.findByIdAndDelete(pizzaId);
 };
 
 export default {

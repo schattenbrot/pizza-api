@@ -1,0 +1,354 @@
+{
+    "_id": "639e591e-865e-4363-98a0-7f6dee845ae8",
+    "colName": "pizza-api",
+    "created": "2023-08-01T18:49:02.547Z",
+    "sortNum": 10000,
+    "folders": [
+        {
+            "_id": "f632111b-59cc-4528-9dd9-f461a7f285e7",
+            "name": "Create Dummydata",
+            "containerId": "",
+            "created": "2023-08-01T18:49:13.384Z",
+            "sortNum": 10000
+        },
+        {
+            "_id": "5ae78f8f-86ec-44f7-bb00-3f1f0e6db2ef",
+            "name": "Pizza",
+            "containerId": "",
+            "created": "2023-08-01T19:57:48.761Z",
+            "sortNum": 20000
+        },
+        {
+            "_id": "16e3c80f-677d-4465-9190-097d3285d227",
+            "name": "Orders",
+            "containerId": "",
+            "created": "2023-08-01T21:17:38.516Z",
+            "sortNum": 30000
+        }
+    ],
+    "requests": [
+        {
+            "_id": "7703c783-0b31-4ae6-a399-2ace9c641408",
+            "colId": "639e591e-865e-4363-98a0-7f6dee845ae8",
+            "containerId": "f632111b-59cc-4528-9dd9-f461a7f285e7",
+            "name": "Create Pizza 1",
+            "url": "{{baseUrl}}/pizza",
+            "method": "POST",
+            "sortNum": 10000,
+            "created": "2023-08-01T18:49:47.021Z",
+            "modified": "2023-08-02T07:08:36.266Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"name\": \"Salami\",\n  \"image\": \"salami.png\",\n  \"price\": 0.99\n}",
+                "form": []
+            },
+            "tests": [
+                {
+                    "type": "set-env-var",
+                    "custom": "json.id",
+                    "action": "setto",
+                    "value": "{{pizzaId1}}"
+                }
+            ]
+        },
+        {
+            "_id": "b8b53d86-0ad7-4142-8db3-43d3fb7da401",
+            "colId": "639e591e-865e-4363-98a0-7f6dee845ae8",
+            "containerId": "f632111b-59cc-4528-9dd9-f461a7f285e7",
+            "name": "Create Pizza 2",
+            "url": "{{baseUrl}}/pizza",
+            "method": "POST",
+            "sortNum": 20000,
+            "created": "2023-08-01T18:54:00.584Z",
+            "modified": "2023-08-02T07:08:52.372Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"name\": \"Diavolo\",\n  \"image\": \"diavolo.png\",\n  \"price\": 7.99\n}",
+                "form": []
+            },
+            "tests": [
+                {
+                    "type": "set-env-var",
+                    "custom": "json.id",
+                    "action": "setto",
+                    "value": "{{pizzaId2}}"
+                }
+            ]
+        },
+        {
+            "_id": "a15dae72-782e-4fbc-9b64-c9e54340eb44",
+            "colId": "639e591e-865e-4363-98a0-7f6dee845ae8",
+            "containerId": "f632111b-59cc-4528-9dd9-f461a7f285e7",
+            "name": "Create Pizza 3",
+            "url": "{{baseUrl}}/pizza",
+            "method": "POST",
+            "sortNum": 30000,
+            "created": "2023-08-01T18:54:02.578Z",
+            "modified": "2023-08-02T07:54:02.584Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"name\": \"Special\",\n  \"image\": \"special.png\",\n  \"price\": 5.99\n}",
+                "form": []
+            },
+            "tests": [
+                {
+                    "type": "set-env-var",
+                    "custom": "json.id",
+                    "action": "setto",
+                    "value": "{{pizzaId3}}"
+                }
+            ]
+        },
+        {
+            "_id": "e84bf186-40d1-43ac-8b3f-175a4cdd7d1f",
+            "colId": "639e591e-865e-4363-98a0-7f6dee845ae8",
+            "containerId": "5ae78f8f-86ec-44f7-bb00-3f1f0e6db2ef",
+            "name": "Create",
+            "url": "{{baseUrl}}/pizza",
+            "method": "POST",
+            "sortNum": 10000,
+            "created": "2023-08-01T19:57:33.402Z",
+            "modified": "2023-08-01T20:02:33.443Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"name\": \"Salami\",\n  \"image\": \"salami.png\",\n  \"price\": 0.99\n}",
+                "form": []
+            },
+            "tests": [
+                {
+                    "type": "set-env-var",
+                    "custom": "json.id",
+                    "action": "setto",
+                    "value": "{{pizzaId}}"
+                }
+            ]
+        },
+        {
+            "_id": "a45dc037-6093-4e3e-8f6e-40b5df2b07bc",
+            "colId": "639e591e-865e-4363-98a0-7f6dee845ae8",
+            "containerId": "5ae78f8f-86ec-44f7-bb00-3f1f0e6db2ef",
+            "name": "GetAll",
+            "url": "{{baseUrl}}/pizza",
+            "method": "GET",
+            "sortNum": 30000,
+            "created": "2023-08-01T19:58:15.827Z",
+            "modified": "2023-08-01T19:58:25.155Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "5a588d4f-6a98-4370-8f8e-714d43be00a0",
+            "colId": "639e591e-865e-4363-98a0-7f6dee845ae8",
+            "containerId": "5ae78f8f-86ec-44f7-bb00-3f1f0e6db2ef",
+            "name": "Get One",
+            "url": "{{baseUrl}}/pizza/{{pizzaId}}",
+            "method": "GET",
+            "sortNum": 40000,
+            "created": "2023-08-01T19:58:45.879Z",
+            "modified": "2023-08-01T20:02:54.737Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "e3a38500-c878-4364-a32d-c20a9bcc58f0",
+            "colId": "639e591e-865e-4363-98a0-7f6dee845ae8",
+            "containerId": "5ae78f8f-86ec-44f7-bb00-3f1f0e6db2ef",
+            "name": "update",
+            "url": "{{baseUrl}}/pizza/{{pizzaId}}",
+            "method": "PUT",
+            "sortNum": 40000,
+            "created": "2023-08-01T20:03:10.524Z",
+            "modified": "2023-08-01T20:04:15.895Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"name\": \"Schinken\",\n  \"image\": \"schinken.png\",\n  \"price\": 17.99\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "c807c9f0-6494-448d-8f8c-d5d66dd5f93b",
+            "colId": "639e591e-865e-4363-98a0-7f6dee845ae8",
+            "containerId": "5ae78f8f-86ec-44f7-bb00-3f1f0e6db2ef",
+            "name": "delete",
+            "url": "{{baseUrl}}/pizza/{{pizzaId}}",
+            "method": "DELETE",
+            "sortNum": 50000,
+            "created": "2023-08-01T20:04:48.798Z",
+            "modified": "2023-08-01T20:04:59.467Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "6ff88835-b0c8-4039-b38d-c3362960c5ba",
+            "colId": "639e591e-865e-4363-98a0-7f6dee845ae8",
+            "containerId": "16e3c80f-677d-4465-9190-097d3285d227",
+            "name": "create",
+            "url": "{{baseUrl}}/order",
+            "method": "POST",
+            "sortNum": 60000,
+            "created": "2023-08-01T21:17:46.032Z",
+            "modified": "2023-08-02T16:51:56.009Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"customer\": {\n    \"name\": \"Test\",\n    \"address\": \"hahastreet\"\n  },\n  \"pizzas\": [\n    \"{{pizzaId1}}\"\n  ]\n}",
+                "form": []
+            },
+            "tests": [
+                {
+                    "type": "set-env-var",
+                    "custom": "json.id",
+                    "action": "setto",
+                    "value": "{{orderId}}"
+                }
+            ]
+        },
+        {
+            "_id": "5ef1f8e6-7a6c-4557-a106-0dd11d35404f",
+            "colId": "639e591e-865e-4363-98a0-7f6dee845ae8",
+            "containerId": "16e3c80f-677d-4465-9190-097d3285d227",
+            "name": "getAll",
+            "url": "{{baseUrl}}/order",
+            "method": "GET",
+            "sortNum": 70000,
+            "created": "2023-08-01T21:40:09.331Z",
+            "modified": "2023-08-01T21:40:18.707Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "ea8242c6-6065-4fb0-be5f-71220204ff18",
+            "colId": "639e591e-865e-4363-98a0-7f6dee845ae8",
+            "containerId": "16e3c80f-677d-4465-9190-097d3285d227",
+            "name": "get One",
+            "url": "{{baseUrl}}/order/{{orderId}}",
+            "method": "GET",
+            "sortNum": 80000,
+            "created": "2023-08-01T21:43:51.819Z",
+            "modified": "2023-08-02T17:00:27.276Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "9f0e895a-0541-417c-a4e2-59192d709196",
+            "colId": "639e591e-865e-4363-98a0-7f6dee845ae8",
+            "containerId": "16e3c80f-677d-4465-9190-097d3285d227",
+            "name": "delete",
+            "url": "{{baseUrl}}/order/{{orderId}}",
+            "method": "DELETE",
+            "sortNum": 90000,
+            "created": "2023-08-01T21:45:10.916Z",
+            "modified": "2023-08-02T17:01:27.431Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "0de556cd-b578-48a0-b98d-1309a5a74474",
+            "colId": "639e591e-865e-4363-98a0-7f6dee845ae8",
+            "containerId": "16e3c80f-677d-4465-9190-097d3285d227",
+            "name": "update",
+            "url": "{{baseUrl}}/order/{{orderId}}",
+            "method": "PUT",
+            "sortNum": 80000,
+            "created": "2023-08-01T21:52:10.095Z",
+            "modified": "2023-08-02T17:00:52.959Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"customer\": {\n    \"name\": \"Test\",\n    \"address\": \"hahastreet2\"\n  },\n  \"pizzas\": [\n    \"{{pizzaId2}}\"\n  ]\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "4dee538a-a9ed-4da9-9331-3317cdec4eb4",
+            "colId": "639e591e-865e-4363-98a0-7f6dee845ae8",
+            "containerId": "16e3c80f-677d-4465-9190-097d3285d227",
+            "name": "update pizza status of order",
+            "url": "{{baseUrl}}/order/{{orderId}}/status",
+            "method": "PATCH",
+            "sortNum": 85000,
+            "created": "2023-08-01T22:06:12.203Z",
+            "modified": "2023-08-02T17:01:13.017Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"index\": 0,\n  \"status\": 2\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "f30031fc-24bf-44fc-8d77-b49bf43ab4f3",
+            "colId": "639e591e-865e-4363-98a0-7f6dee845ae8",
+            "containerId": "f632111b-59cc-4528-9dd9-f461a7f285e7",
+            "name": "Create Order 1",
+            "url": "{{baseUrl}}/order",
+            "method": "POST",
+            "sortNum": 40000,
+            "created": "2023-08-02T07:06:41.440Z",
+            "modified": "2023-08-02T16:59:14.800Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"customer\": {\n    \"name\": \"Test User 1\",\n    \"address\": \"Test User 1's adress\"\n  },\n  \"pizzas\": [\n    \"{{pizzaId1}}\", \"{{pizzaId2}}\"\n  ]\n}",
+                "form": []
+            },
+            "tests": [
+                {
+                    "type": "set-env-var",
+                    "custom": "json.id",
+                    "action": "setto",
+                    "value": "{{orderId1}}"
+                }
+            ]
+        },
+        {
+            "_id": "2da703dc-bad0-4bf9-9086-7d6c216de673",
+            "colId": "639e591e-865e-4363-98a0-7f6dee845ae8",
+            "containerId": "f632111b-59cc-4528-9dd9-f461a7f285e7",
+            "name": "Create Order 2",
+            "url": "{{baseUrl}}/order",
+            "method": "POST",
+            "sortNum": 50000,
+            "created": "2023-08-02T07:09:27.785Z",
+            "modified": "2023-08-02T16:59:19.203Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"customer\": {\n    \"name\": \"Test User 2\",\n    \"address\": \"Test User 2's adress\"\n  },\n  \"pizzas\": [\n    \"{{pizzaId1}}\", \"{{pizzaId1}}\", \"{{pizzaId3}}\"\n  ]\n}",
+                "form": []
+            },
+            "tests": [
+                {
+                    "type": "set-env-var",
+                    "custom": "json.id",
+                    "action": "setto",
+                    "value": "{{orderId2}}"
+                }
+            ]
+        }
+    ]
+}

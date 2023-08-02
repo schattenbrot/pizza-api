@@ -1,74 +1,59 @@
 import { RequestHandler } from 'express';
-import { Pizza } from '../models/pizza';
+import { IPizza } from '../models/pizza';
 import pizzaService from '../services/pizza';
 import createHttpError from 'http-errors';
 
-export const createPizza: RequestHandler<{}, any, Pizza> = async (
+export const createPizza: RequestHandler<{}, any, IPizza> = async (
   req,
-  res,
-  next
+  res
 ) => {
   const pizza = req.body;
-  try {
-    const createdPizza = await pizzaService.createPizza(pizza);
-    res.status(201).json(createdPizza);
-  } catch (err: any) {
-    next(createHttpError(500, 'Internal Server Error', err));
-  }
+  const createdPizza = await pizzaService.createPizza(pizza);
+  res.status(201).json(createdPizza);
 };
 
 export const getAllPizzas: RequestHandler = async (req, res, next) => {
-  try {
-    const pizzas = await pizzaService.getAllPizzas();
-    if (!pizzas.length) return next(createHttpError(404, 'Pizzas not found'));
-    res.json(pizzas);
-  } catch (err: any) {
-    next(createHttpError(500, 'Internal Server Error', err));
+  const pizzas = await pizzaService.getAllPizzas();
+  if (!pizzas.length) {
+    throw createHttpError(404, 'Pizzas not found');
   }
+  res.json(pizzas);
 };
 
 export const getPizzaById: RequestHandler<{ id: string }> = async (
   req,
-  res,
-  next
+  res
 ) => {
   const pizzaId = req.params.id;
-  try {
-    const pizza = await pizzaService.getPizzaById(pizzaId);
-    if (!pizza) return next(createHttpError(404, 'Pizza not found'));
-    res.json(pizza);
-  } catch (err: any) {
-    next(createHttpError(500, 'Internal Server Error', err));
+  const pizza = await pizzaService.getPizzaById(pizzaId);
+  if (!pizza) {
+    throw createHttpError(404, 'Pizza not found');
   }
+  res.json(pizza);
 };
 
 export const updatePizzaById: RequestHandler<
   { id: string },
   any,
-  Pizza
-> = async (req, res, next) => {
+  IPizza
+> = async (req, res) => {
   const pizzaId = req.params.id;
   const updatedPizza = req.body;
-  try {
-    const pizza = await pizzaService.updatePizzaById(pizzaId, updatedPizza);
-    if (!pizza) return next(createHttpError(404, 'Pizza not found'));
-    res.json(pizza);
-  } catch (err: any) {
-    next(createHttpError(500, 'Internal Server Error', err));
+  const pizza = await pizzaService.updatePizzaById(pizzaId, updatedPizza);
+  if (!pizza) {
+    throw createHttpError(404, 'Pizza not found');
   }
+  res.json(pizza);
 };
 
 export const deletePizzaById: RequestHandler<{ id: string }> = async (
   req,
-  res,
-  next
+  res
 ) => {
   const pizzaId = req.params.id;
-  try {
-    const pizza = await pizzaService.deletePizzaById(pizzaId);
-    if (!pizza) return next(createHttpError(404, 'Pizza not found'));
-    res.json({ message: 'Pizza deleted successfully' });
-  } catch (err: any) {
-    next(createHttpError(500, 'Internal Server Error', err));
+  const pizza = await pizzaService.deletePizzaById(pizzaId);
+  if (!pizza) {
+    throw createHttpError(404, 'Pizza not found');
   }
+  res.json({ message: 'Pizza deleted successfully' });
 };

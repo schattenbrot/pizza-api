@@ -1,5 +1,5 @@
-import { Schema, Types, model } from 'mongoose';
-import { Pizza, PizzaSchema } from './pizza';
+import mongoose from 'mongoose';
+import { IPizza } from './pizza';
 
 export enum PizzaStatus {
   ordered,
@@ -9,22 +9,22 @@ export enum PizzaStatus {
   done,
 }
 
-export type OrderedPizza = {
-  _id?: string;
-  pizza: Pizza;
-  status: PizzaStatus;
-};
+export interface IOrder {
+  customer: {
+    name: string;
+    address: string;
+  };
+  pizzas: {
+    pizza: IPizza;
+    status: PizzaStatus;
+  }[];
+}
 
-export type Customer = {
-  name: string;
-  address: string;
-};
+export interface IOrderDocument extends IOrder, mongoose.Document {}
 
-export type Order = {
-  _id?: string;
-  customer: Customer;
-  pizzas: OrderedPizza[];
-};
+interface IOrderModel extends mongoose.Model<IOrderDocument> {
+  build(args: IOrder): IOrderDocument;
+}
 
 /**
  * @swagger
@@ -33,10 +33,6 @@ export type Order = {
  *     OrderedPizza:
  *       type: object
  *       properties:
- *         _id:
- *           type: string
- *           description: The ID of the ordered pizz.
- *           format: ObjectId
  *         pizza:
  *           $ref: '#/components/schemas/Pizza'
  *         status:
@@ -48,15 +44,35 @@ export type Order = {
  *             - delivering
  *             - done
  *           description: The status of the ordered pizza.
+ *         createdAt:
+ *           type: string
+ *           form: datetime
+ *         updatedAt:
+ *           type: string
+ *           form: datetime
  */
-
-export const OrderedPizzaSchema = new Schema({
-  pizza: PizzaSchema,
-  status: {
-    type: String,
-    enum: PizzaStatus,
+const OrderedPizza = new mongoose.Schema(
+  {
+    pizza: {
+      name: {
+        type: String,
+      },
+      image: {
+        type: String,
+      },
+      price: {
+        type: Number,
+      },
+    },
+    status: {
+      type: Number,
+      enum: PizzaStatus,
+    },
   },
-});
+  {
+    _id: false,
+  }
+);
 
 /**
  * @swagger
@@ -65,7 +81,7 @@ export const OrderedPizzaSchema = new Schema({
  *     Order:
  *       type: object
  *       properties:
- *         _id:
+ *         id:
  *           type: string
  *           description: The ID of the order.
  *           format: ObjectId
@@ -85,37 +101,44 @@ export const OrderedPizzaSchema = new Schema({
  *       required:
  *         - customer
  */
-const OrderSchema = new Schema({
-  customer: {
-    name: {
-      type: String,
+const OrderSchema = new mongoose.Schema<IOrderDocument>(
+  {
+    customer: {
+      name: {
+        type: String,
+      },
+      address: {
+        type: String,
+      },
     },
-    address: {
-      type: String,
-    },
+    pizzas: [OrderedPizza],
   },
-  pizzas: [
-    {
-      pizza: {
-        _id: Types.ObjectId,
-        name: {
-          type: String,
-        },
-        image: {
-          type: String,
-        },
-        price: {
-          type: Number,
-        },
+  {
+    timestamps: true,
+    toJSON: {
+      transform(doc, ret, options) {
+        ret.id = ret._id;
+        delete ret._id;
       },
-      status: {
-        type: Number,
-        enum: PizzaStatus,
-      },
+      versionKey: false,
     },
-  ],
-});
+    toObject: {
+      transform(doc, ret, options) {
+        ret.id = ret._id.toHexString();
+        delete ret._id;
+        ret.updatedAt = doc.updatedAt.toISOString();
+        ret.createdAt = doc.createdAt.toISOString();
+      },
+      versionKey: false,
+    },
+  }
+);
 
-export const OrderedPizzaModel = model('OrderedPizza', OrderedPizzaSchema);
+// OrderSchema.statics.build = (args: IOrder) => {
+//   return new Order(args);
+// };
 
-export default model('Order', OrderSchema);
+export const Order = mongoose.model<IOrderDocument, IOrderModel>(
+  'Order',
+  OrderSchema
+);

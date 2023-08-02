@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import 'express-async-errors';
 import validators from '../validators';
 import {
   createOrder,
@@ -235,6 +236,7 @@ router.put(
  *                   - delivering
  *                   - done
  *                 description: The new status of the Order.
+ *                 example: 3
  *     responses:
  *       '200':
  *         description: Successful operation

@@ -1,0 +1,42 @@
+{
+    "_id": "ea866096-34e4-4427-93d5-8437aeb135d2",
+    "name": "pizza-api",
+    "default": true,
+    "sortNum": 10000,
+    "created": "2023-08-01T18:50:34.616Z",
+    "modified": "2023-08-01T18:50:34.616Z",
+    "data": [
+        {
+            "name": "baseUrl",
+            "value": "http://localhost:8080/api"
+        },
+        {
+            "name": "pizzaId",
+            "value": "64ca8bf989a8eaba87ce95e7"
+        },
+        {
+            "name": "pizzaId1",
+            "value": "64ca8b8d89a8eaba87ce95c6"
+        },
+        {
+            "name": "pizzaId2",
+            "value": "64ca8b8d89a8eaba87ce95c8"
+        },
+        {
+            "name": "pizzaId3",
+            "value": "64ca8b8d89a8eaba87ce95ca"
+        },
+        {
+            "name": "orderId",
+            "value": "64ca8bef89a8eaba87ce95df"
+        },
+        {
+            "name": "orderId1",
+            "value": "64ca8b8d89a8eaba87ce95ce"
+        },
+        {
+            "name": "orderId2",
+            "value": "64ca8b8e89a8eaba87ce95d3"
+        }
+    ]
+}

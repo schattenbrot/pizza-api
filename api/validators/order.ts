@@ -1,6 +1,6 @@
 import { body, param } from 'express-validator';
 import { isValidObjectId } from 'mongoose';
-import { OrderedPizza, PizzaStatus } from '../models/order';
+import { PizzaStatus } from '../models/order';
 
 export const createOrder = [
   body('customer.name').notEmpty().isString(),
