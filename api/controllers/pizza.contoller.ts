@@ -1,6 +1,6 @@
 import { RequestHandler } from 'express';
-import { IPizza } from '../models/pizza';
-import pizzaService from '../services/pizza';
+import { IPizza } from '../models/pizza.model';
+import pizzaService from '../services/pizza.service';
 import createHttpError from 'http-errors';
 
 export const createPizza: RequestHandler<{}, any, IPizza> = async (

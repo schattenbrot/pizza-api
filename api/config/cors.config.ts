@@ -1,5 +1,5 @@
-import { CORS_ORIGIN } from './environment';
-import logger from './logger';
+import { CORS_ORIGIN } from './environment.config';
+import logger from '../utils/logger';
 
 const origin = CORS_ORIGIN;
 

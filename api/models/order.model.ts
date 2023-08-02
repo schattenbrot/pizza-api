@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { IPizza } from './pizza';
+import { IPizza } from './pizza.model';
 
 export enum PizzaStatus {
   ordered,

@@ -1,6 +1,6 @@
 import { RequestHandler } from 'express';
-import * as pizza from './pizza';
-import * as order from './order';
+import * as pizza from './pizza.validator';
+import * as order from './order.validator';
 import { validationResult } from 'express-validator';
 import createHttpError from 'http-errors';
 

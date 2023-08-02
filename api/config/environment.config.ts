@@ -1,5 +1,4 @@
-// import 'dotenv/config';
-import logger from './logger';
+import logger from '../utils/logger';
 
 type Env = 'production' | 'development';
 

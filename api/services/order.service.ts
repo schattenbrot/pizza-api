@@ -1,4 +1,9 @@
-import { Order, IOrderDocument, IOrder, PizzaStatus } from '../models/order';
+import {
+  Order,
+  IOrderDocument,
+  IOrder,
+  PizzaStatus,
+} from '../models/order.model';
 
 const createOrder = async (order: IOrder) => {
   return Order.create(order);

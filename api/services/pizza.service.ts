@@ -1,4 +1,4 @@
-import { Pizza, IPizza } from '../models/pizza';
+import { Pizza, IPizza } from '../models/pizza.model';
 
 const createPizza = async (pizza: IPizza) => {
   return Pizza.create(pizza);

@@ -1,9 +1,9 @@
 import mongoose from 'mongoose';
 import supertest from 'supertest';
 
-import app from '../utils/express';
-import { IPizza, IPizzaDocument } from '../models/pizza';
-import pizzaService from '../services/pizza';
+import app from '../../utils/express';
+import { IPizza, IPizzaDocument } from '../../models/pizza.model';
+import pizzaService from '../../services/pizza.service';
 
 const mockedPizza: IPizza = {
   name: 'Salami',

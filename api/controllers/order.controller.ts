@@ -1,9 +1,9 @@
 import { RequestHandler } from 'express';
-import { IOrder, Order, PizzaStatus } from '../models/order';
+import { IOrder, Order, PizzaStatus } from '../models/order.model';
 import createHttpError from 'http-errors';
-import orderService from '../services/order';
-import pizzaService from '../services/pizza';
-import { IPizza } from '../models/pizza';
+import orderService from '../services/order.service';
+import pizzaService from '../services/pizza.service';
+import { IPizza } from '../models/pizza.model';
 
 type OrderInput = {
   customer: {

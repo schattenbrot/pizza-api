@@ -1,11 +1,11 @@
 import mongoose from 'mongoose';
 import supertest from 'supertest';
 
-import app from '../utils/express';
-import { IOrder, PizzaStatus, IOrderDocument } from '../models/order';
-import { Pizza, IPizza, IPizzaDocument } from '../models/pizza';
-import orderService from '../services/order';
-import pizzaService from '../services/pizza';
+import app from '../../utils/express';
+import { IOrder, PizzaStatus, IOrderDocument } from '../../models/order.model';
+import { Pizza, IPizza, IPizzaDocument } from '../../models/pizza.model';
+import orderService from '../../services/order.service';
+import pizzaService from '../../services/pizza.service';
 
 const mockedPizza: IPizza = {
   image: 'salami.png',

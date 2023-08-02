@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
-import environment from './environment';
-import logger from './logger';
+import environment from './environment.config';
+import logger from '../utils/logger';
 
 const { DATABASE_PROTOCOL, DATABASE_URL, DATABASE_PORT, DATABASE_NAME } =
   environment;

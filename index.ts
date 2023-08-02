@@ -1,6 +1,6 @@
-import { PORT, SERVER } from './api/utils/environment';
+import { PORT, SERVER } from './api/config/environment.config';
 import app from './api/utils/express';
-import './api/utils/mongoose';
+import './api/config/mongoose';
 import logger from './api/utils/logger';
 
 app.listen(PORT);

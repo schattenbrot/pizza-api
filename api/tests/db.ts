@@ -7,9 +7,7 @@ MongoMemoryServer.create().then(mongo => {
 });
 
 export const mockMongo = async () => {
-  if (!mongodb) {
-    mongodb = await MongoMemoryServer.create();
-  }
+  mongodb = await MongoMemoryServer.create();
   await mongoose.connect(mongodb.getUri());
 };
 

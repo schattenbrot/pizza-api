@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { HttpError } from 'http-errors';
-import { NODE_ENV } from './environment';
-import logger from './logger';
+import { NODE_ENV } from '../config/environment.config';
+import logger from '../utils/logger';
 
 /**
  * @swagger

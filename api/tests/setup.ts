@@ -5,7 +5,6 @@ beforeAll(async () => {
 });
 
 beforeEach(async () => {
-  await mockMongo();
   await resetMongo();
 });
 

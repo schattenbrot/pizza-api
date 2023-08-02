@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import 'express-async-errors';
-import validators from '../validators';
+
 import {
   createOrder,
   deleteOrderById,
@@ -8,7 +8,8 @@ import {
   getOrderById,
   updateOrderById,
   updateOrderedPizzaStatusById,
-} from '../controllers/order';
+} from '../controllers/order.controller';
+import validators from '../validators';
 
 const router = Router();
 
