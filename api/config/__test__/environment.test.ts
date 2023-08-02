@@ -7,7 +7,7 @@ describe('Configuration', () => {
     delete process.env.NODE_ENV; // gets set to test when using jest
 
     const environment = require('../environment.config');
-    const app = require('../../utils/express');
+    const app = require('../app.config');
 
     expect(environment.SERVER).toBe('localhost');
     expect(environment.NODE_ENV).toBe('development');

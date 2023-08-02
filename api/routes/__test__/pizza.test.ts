@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import supertest from 'supertest';
 
-import app from '../../utils/express';
+import app from '../../config/app.config';
 import { IPizza, IPizzaDocument } from '../../models/pizza.model';
 import pizzaService from '../../services/pizza.service';
 

@@ -5,8 +5,8 @@
   "scripts": {
     "start": "node dist/build/index.js",
     "build": "tsc --outDir dist/build",
-    "dev": "ts-node-dev --respawn --transpile-only index.ts",
-    "dev:env": "ts-node-dev --require dotenv/config --respawn --transpile-only index.ts",
+    "dev": "ts-node-dev --respawn --transpile-only api/index.ts",
+    "dev:env": "ts-node-dev --require dotenv/config --respawn --transpile-only api/index.ts",
     "test": "jest",
     "test:coverage": "jest --coverage"
   },

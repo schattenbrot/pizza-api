@@ -1,9 +1,10 @@
 import { Express } from 'express';
 import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
+
 import { version } from '../../package.json';
-import logger from './logger';
-import { PORT, SERVER } from '../config/environment.config';
+import logger from '../utils/logger';
+import { PORT, SERVER } from './environment.config';
 
 const options: swaggerJSDoc.Options = {
   definition: {
