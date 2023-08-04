@@ -50,7 +50,7 @@ describe('order', () => {
           address: 'address',
         };
         const { body, statusCode } = await supertest(app)
-          .post(`/api/order`)
+          .post(`/api/orders`)
           .send({
             customer,
             pizzas: [pizzas[0].id],
@@ -68,7 +68,7 @@ describe('order', () => {
     describe('given the customer name is invalid', () => {
       it('missing: should return a 422', async () => {
         const { body, statusCode } = await supertest(app)
-          .post(`/api/order`)
+          .post(`/api/orders`)
           .send({ ...mockedOrder, customer: { address: 'address' } });
         expect(statusCode).toBe(422);
         expect(body.statusCode).toBe(422);
@@ -79,7 +79,7 @@ describe('order', () => {
 
       it('number: should return a 422', async () => {
         const { body, statusCode } = await supertest(app)
-          .post(`/api/order`)
+          .post(`/api/orders`)
           .send({ ...mockedOrder, customer: { name: 5, address: 'address' } });
         expect(statusCode).toBe(422);
         expect(body.statusCode).toBe(422);
@@ -90,7 +90,7 @@ describe('order', () => {
     describe('given the customer address is invalid', () => {
       it('missing: should return a 422', async () => {
         const { body, statusCode } = await supertest(app)
-          .post(`/api/order`)
+          .post(`/api/orders`)
           .send({ ...mockedOrder, customer: { name: 'name' } });
         expect(statusCode).toBe(422);
         expect(body.statusCode).toBe(422);
@@ -101,7 +101,7 @@ describe('order', () => {
 
       it('number: should return a 422', async () => {
         const { body, statusCode } = await supertest(app)
-          .post(`/api/order`)
+          .post(`/api/orders`)
           .send({ ...mockedOrder, customer: { name: 'name', address: 5 } });
         expect(statusCode).toBe(422);
         expect(body.statusCode).toBe(422);
@@ -118,7 +118,7 @@ describe('order', () => {
       });
       it('missing: should return a 422', async () => {
         const { body, statusCode } = await supertest(app)
-          .post(`/api/order`)
+          .post(`/api/orders`)
           .send({ customer: { name: 'name', address: 'address' } });
         expect(statusCode).toBe(422);
         expect(body.statusCode).toBe(422);
@@ -127,7 +127,7 @@ describe('order', () => {
 
       it('empty: should return a 422', async () => {
         const { body, statusCode } = await supertest(app)
-          .post(`/api/order`)
+          .post(`/api/orders`)
           .send({ customer: { name: 'name', address: 'address' }, pizzas: [] });
         expect(statusCode).toBe(422);
         expect(body.statusCode).toBe(422);
@@ -136,7 +136,7 @@ describe('order', () => {
 
       it('not an id: should return a 422', async () => {
         const { body, statusCode } = await supertest(app)
-          .post(`/api/order`)
+          .post(`/api/orders`)
           .send({
             customer: { name: 'name', address: 'address' },
             pizzas: ['nope'],
@@ -149,7 +149,7 @@ describe('order', () => {
       it('pizza id not found: should return a 404 error', async () => {
         const pizzaId = '647146489934164b743e2644';
         const { body, statusCode } = await supertest(app)
-          .post(`/api/order`)
+          .post(`/api/orders`)
           .send({
             customer: { name: 'name', address: 'address' },
             pizzas: [pizzaId],
@@ -172,7 +172,7 @@ describe('order', () => {
 
         const orderServiceMock = mockOrderService();
         const { body, statusCode } = await supertest(app)
-          .post(`/api/order`)
+          .post(`/api/orders`)
           .send({
             customer: mockedOrder.customer,
             pizzas: [pizza.id],
@@ -203,7 +203,7 @@ describe('order', () => {
     describe('given orders do exist', () => {
       it('should return a 200 and the orders', async () => {
         const orders = await mockOrders();
-        const { body, statusCode } = await supertest(app).get(`/api/order`);
+        const { body, statusCode } = await supertest(app).get(`/api/orders`);
         expect(statusCode).toBe(200);
         expect(body).toEqual(orders);
       });
@@ -211,7 +211,7 @@ describe('order', () => {
 
     describe('given no order does not exist', () => {
       it('should return a 404', async () => {
-        const { body, statusCode } = await supertest(app).get(`/api/order`);
+        const { body, statusCode } = await supertest(app).get(`/api/orders`);
         expect(statusCode).toBe(404);
         expect(body.statusCode).toBe(404);
         expect(body.message).toBe('Orders not found');
@@ -229,7 +229,7 @@ describe('order', () => {
         pizza.save();
 
         const orderServiceMock = mockOrderService();
-        const { body, statusCode } = await supertest(app).get(`/api/order`);
+        const { body, statusCode } = await supertest(app).get(`/api/orders`);
         expect(statusCode).toBe(500);
         expect(body.statusCode).toBe(500);
         expect(body.message).toBe('Internal Server Error');
@@ -251,7 +251,7 @@ describe('order', () => {
       it('should return a 200 and the order', async () => {
         const order = await mockOrder();
         const { body, statusCode } = await supertest(app).get(
-          `/api/order/${order.id}`
+          `/api/orders/${order.id}`
         );
         expect(statusCode).toBe(200);
         expect(body).toEqual(order);
@@ -262,7 +262,7 @@ describe('order', () => {
       it('should return a 422', async () => {
         const orderId = '6473dcfab93afd651b171a5';
         const { body, statusCode } = await supertest(app).get(
-          `/api/order/${orderId}`
+          `/api/orders/${orderId}`
         );
         expect(statusCode).toBe(422);
         expect(body.statusCode).toBe(422);
@@ -276,7 +276,7 @@ describe('order', () => {
       it('should return a 404', async () => {
         const orderId = '6473dcfab93afd651b171a56';
         const { body, statusCode } = await supertest(app).get(
-          `/api/order/${orderId}`
+          `/api/orders/${orderId}`
         );
         expect(statusCode).toBe(404);
         expect(body.statusCode).toBe(404);
@@ -293,7 +293,7 @@ describe('order', () => {
         const orderServiceMock = mockOrderService();
         const orderId = '6473dcfab93afd651b171a56';
         const { body, statusCode } = await supertest(app).get(
-          `/api/order/${orderId}`
+          `/api/orders/${orderId}`
         );
         expect(statusCode).toBe(500);
         expect(body.statusCode).toBe(500);
@@ -334,7 +334,7 @@ describe('order', () => {
         };
         order.pizzas = [updatedPizza, updatedPizza];
         const { body, statusCode } = await supertest(app)
-          .put(`/api/order/${order.id}`)
+          .put(`/api/orders/${order.id}`)
           .send(updatedOrder);
         expect(statusCode).toBe(200);
 
@@ -350,7 +350,7 @@ describe('order', () => {
       it('missing: should return a 422', async () => {
         const orderId = '6473dcfab93afd651b171a56';
         const { body, statusCode } = await supertest(app)
-          .put(`/api/order/${orderId}`)
+          .put(`/api/orders/${orderId}`)
           .send({ ...mockedOrder, customer: { address: 'address' } });
         expect(statusCode).toBe(422);
         expect(body.statusCode).toBe(422);
@@ -362,7 +362,7 @@ describe('order', () => {
       it('not a string: should return a 422', async () => {
         const orderId = '6473dcfab93afd651b171a56';
         const { body, statusCode } = await supertest(app)
-          .put(`/api/order/${orderId}`)
+          .put(`/api/orders/${orderId}`)
           .send({ ...mockedOrder, customer: { name: 5, address: 'address' } });
         expect(statusCode).toBe(422);
         expect(body.statusCode).toBe(422);
@@ -374,7 +374,7 @@ describe('order', () => {
       it('missing: should return a 422', async () => {
         const orderId = '6473dcfab93afd651b171a56';
         const { body, statusCode } = await supertest(app)
-          .put(`/api/order/${orderId}`)
+          .put(`/api/orders/${orderId}`)
           .send({ ...mockedOrder, customer: { name: 'name' } });
         expect(statusCode).toBe(422);
         expect(body.statusCode).toBe(422);
@@ -386,7 +386,7 @@ describe('order', () => {
       it('not a string: should return a 422', async () => {
         const orderId = '6473dcfab93afd651b171a56';
         const { body, statusCode } = await supertest(app)
-          .put(`/api/order/${orderId}`)
+          .put(`/api/orders/${orderId}`)
           .send({ ...mockedOrder, customer: { name: 'name', address: 5 } });
         expect(statusCode).toBe(422);
         expect(body.statusCode).toBe(422);
@@ -400,7 +400,7 @@ describe('order', () => {
       it('missing: should return a 422', async () => {
         const orderId = '6473dcfab93afd651b171a56';
         const { body, statusCode } = await supertest(app)
-          .put(`/api/order/${orderId}`)
+          .put(`/api/orders/${orderId}`)
           .send({ customer: { name: 'name', address: 'address' } });
         expect(statusCode).toBe(422);
         expect(body.statusCode).toBe(422);
@@ -410,7 +410,7 @@ describe('order', () => {
       it('empty: should return a 422', async () => {
         const orderId = '6473dcfab93afd651b171a56';
         const { body, statusCode } = await supertest(app)
-          .put(`/api/order/${orderId}`)
+          .put(`/api/orders/${orderId}`)
           .send({ customer: { name: 'name', address: 'address' }, pizzas: [] });
         expect(statusCode).toBe(422);
         expect(body.statusCode).toBe(422);
@@ -420,7 +420,7 @@ describe('order', () => {
       it('not an id: should return a 422', async () => {
         const orderId = '6473dcfab93afd651b171a56';
         const { body, statusCode } = await supertest(app)
-          .put(`/api/order/${orderId}`)
+          .put(`/api/orders/${orderId}`)
           .send({
             customer: { name: 'name', address: 'address' },
             pizzas: ['nope'],
@@ -434,7 +434,7 @@ describe('order', () => {
         const orderId = '6473dcfab93afd651b171a56';
         const pizzaId = '647146489934164b743e2644';
         const { body, statusCode } = await supertest(app)
-          .put(`/api/order/${orderId}`)
+          .put(`/api/orders/${orderId}`)
           .send({
             customer: { name: 'name', address: 'address' },
             pizzas: [pizzaId],
@@ -449,7 +449,7 @@ describe('order', () => {
       it('should return a 422', async () => {
         const orderId = '6473dcfab93afd651b171a5';
         const { body, statusCode } = await supertest(app)
-          .put(`/api/order/${orderId}`)
+          .put(`/api/orders/${orderId}`)
           .send({
             customer: {
               name: 'customer',
@@ -470,7 +470,7 @@ describe('order', () => {
         const orderId = new mongoose.Types.ObjectId().toHexString();
         const pizza = await mockPizza();
         const { body, statusCode } = await supertest(app)
-          .put(`/api/order/${orderId}`)
+          .put(`/api/orders/${orderId}`)
           .send({
             customer: {
               name: 'customer',
@@ -497,7 +497,7 @@ describe('order', () => {
         const pizza = await mockPizza();
         const orderServiceMock = mockOrderService();
         const { body, statusCode } = await supertest(app)
-          .put(`/api/order/${order.id}`)
+          .put(`/api/orders/${order.id}`)
           .send({
             customer: {
               name: 'customer',
@@ -533,7 +533,7 @@ describe('order', () => {
         const index = 0;
         const status = PizzaStatus.oven;
         const { body, statusCode } = await supertest(app)
-          .patch(`/api/order/${order.id}/status`)
+          .patch(`/api/orders/${order.id}/status`)
           .send({
             index,
             status,
@@ -552,7 +552,7 @@ describe('order', () => {
         const orderId = '6473dcfab93afd651b171a56';
         const status = PizzaStatus.oven;
         const { body, statusCode } = await supertest(app)
-          .patch(`/api/order/${orderId}/status`)
+          .patch(`/api/orders/${orderId}/status`)
           .send({
             status,
           });
@@ -566,7 +566,7 @@ describe('order', () => {
         const index = 'index';
         const status = PizzaStatus.oven;
         const { body, statusCode } = await supertest(app)
-          .patch(`/api/order/${orderId}/status`)
+          .patch(`/api/orders/${orderId}/status`)
           .send({
             index,
             status,
@@ -582,7 +582,7 @@ describe('order', () => {
         const orderId = new mongoose.Types.ObjectId().toHexString();
         const index = 0;
         const { body, statusCode } = await supertest(app)
-          .patch(`/api/order/${orderId}/status`)
+          .patch(`/api/orders/${orderId}/status`)
           .send({
             index,
           });
@@ -596,7 +596,7 @@ describe('order', () => {
         const index = 0;
         const status = 'status';
         const { body, statusCode } = await supertest(app)
-          .patch(`/api/order/${orderId}/status`)
+          .patch(`/api/orders/${orderId}/status`)
           .send({
             index,
             status,
@@ -613,7 +613,7 @@ describe('order', () => {
         const index = 0;
         const status = PizzaStatus.oven;
         const { body, statusCode } = await supertest(app)
-          .patch(`/api/order/${orderId}/status`)
+          .patch(`/api/orders/${orderId}/status`)
           .send({
             index,
             status,
@@ -632,7 +632,7 @@ describe('order', () => {
         const index = 0;
         const status = PizzaStatus.oven;
         const { body, statusCode } = await supertest(app)
-          .patch(`/api/order/${orderId}/status`)
+          .patch(`/api/orders/${orderId}/status`)
           .send({
             index,
             status,
@@ -656,7 +656,7 @@ describe('order', () => {
         const status = PizzaStatus.oven;
         const orderServiceMock = mockOrderService();
         const { body, statusCode } = await supertest(app)
-          .patch(`/api/order/${orderId}/status`)
+          .patch(`/api/orders/${orderId}/status`)
           .send({
             index,
             status,
@@ -682,7 +682,7 @@ describe('order', () => {
       it('should return a 200 response with the order', async () => {
         const order = await mockOrder();
         const { body, statusCode } = await supertest(app).delete(
-          `/api/order/${order.id}`
+          `/api/orders/${order.id}`
         );
         expect(statusCode).toBe(200);
         expect(body).toEqual({ message: 'Order deleted successfully' });
@@ -693,7 +693,7 @@ describe('order', () => {
       it('should return a 422 error', async () => {
         const orderId = '64772682628695a97466b37';
         const { body, statusCode } = await supertest(app).delete(
-          `/api/order/${orderId}`
+          `/api/orders/${orderId}`
         );
         expect(statusCode).toBe(422);
         expect(body.statusCode).toBe(422);
@@ -707,7 +707,7 @@ describe('order', () => {
       it('should return a 404 error', async () => {
         const orderId = new mongoose.Types.ObjectId().toHexString();
         const { body, statusCode } = await supertest(app).delete(
-          `/api/order/${orderId}`
+          `/api/orders/${orderId}`
         );
         expect(statusCode).toBe(404);
         expect(body.statusCode).toBe(404);
@@ -726,7 +726,7 @@ describe('order', () => {
         const orderServiceMock = mockOrderService();
         const orderId = new mongoose.Types.ObjectId().toHexString();
         const { body, statusCode } = await supertest(app).delete(
-          `/api/order/${orderId}`
+          `/api/orders/${orderId}`
         );
         expect(statusCode).toBe(500);
         expect(body.statusCode).toBe(500);

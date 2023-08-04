@@ -1,7 +1,11 @@
 import { PORT, SERVER } from './config/environment.config';
 import app from './config/app.config';
-import './config/mongoose.config';
 import logger from './utils/logger';
+import { connectDatabase } from './config/mongoose.config';
 
-app.listen(PORT);
-logger.info(`Api available at: http://${SERVER}:${PORT}/api`);
+connectDatabase().then(() => {
+  app.listen(PORT);
+
+  logger.info(`API available at: http://${SERVER}:${PORT}/api`);
+  logger.info(`DOCS available at: http://${SERVER}:${PORT}/docs`);
+});

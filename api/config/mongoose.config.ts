@@ -1,14 +1,10 @@
 import mongoose from 'mongoose';
 import environment from './environment.config';
-import logger from '../utils/logger';
 
 const { DATABASE_PROTOCOL, DATABASE_URL, DATABASE_PORT, DATABASE_NAME } =
   environment;
 
-mongoose
-  .connect(
+export const connectDatabase = () =>
+  mongoose.connect(
     `${DATABASE_PROTOCOL}://${DATABASE_URL}:${DATABASE_PORT}/${DATABASE_NAME}`
-  )
-  .catch(error =>
-    logger.error('An error occurred while connecting to the database')
   );

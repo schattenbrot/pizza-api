@@ -11,8 +11,12 @@
             "value": "http://localhost:8080/api"
         },
         {
+            "name": "userId",
+            "value": "64cd1a7b168053ca3aa7d111"
+        },
+        {
             "name": "pizzaId",
-            "value": "64cac4908e31e39f5a077f16"
+            "value": "64cd19242413b753bb0938f6"
         },
         {
             "name": "pizzaId1",

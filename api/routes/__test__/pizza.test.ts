@@ -19,7 +19,7 @@ describe('pizza', () => {
     describe('given the pizza is valid', () => {
       it('should return a 201 and the pizza', async () => {
         const { body, statusCode } = await supertest(app)
-          .post(`/api/pizza`)
+          .post(`/api/pizzas`)
           .send(mockedPizza);
         expect(statusCode).toBe(201);
         expect(body.name).toBe(mockedPizza.name);
@@ -31,7 +31,7 @@ describe('pizza', () => {
     describe('given the pizza name is invalid', () => {
       it('missing: should return a 422', async () => {
         const { body, statusCode } = await supertest(app)
-          .post(`/api/pizza`)
+          .post(`/api/pizzas`)
           .send({
             image: mockedPizza.image,
             price: mockedPizza.price,
@@ -43,7 +43,7 @@ describe('pizza', () => {
 
       it('number: should return a 422', async () => {
         const { body, statusCode } = await supertest(app)
-          .post(`/api/pizza`)
+          .post(`/api/pizzas`)
           .send({
             name: 5,
             image: mockedPizza.image,
@@ -58,7 +58,7 @@ describe('pizza', () => {
     describe('given the pizza image is invalid', () => {
       it('missing: should return a 422', async () => {
         const { body, statusCode } = await supertest(app)
-          .post(`/api/pizza`)
+          .post(`/api/pizzas`)
           .send({
             name: mockedPizza.name,
             price: mockedPizza.price,
@@ -70,7 +70,7 @@ describe('pizza', () => {
 
       it('number: should return a 422', async () => {
         const { body, statusCode } = await supertest(app)
-          .post(`/api/pizza`)
+          .post(`/api/pizzas`)
           .send({
             name: mockedPizza.name,
             image: 5,
@@ -85,7 +85,7 @@ describe('pizza', () => {
     describe('given the pizza price is invalid', () => {
       it('missing: should return a 422', async () => {
         const { body, statusCode } = await supertest(app)
-          .post(`/api/pizza`)
+          .post(`/api/pizzas`)
           .send({
             name: mockedPizza.name,
             image: mockedPizza.image,
@@ -97,7 +97,7 @@ describe('pizza', () => {
 
       it('wrong format: should return a 422', async () => {
         const { body, statusCode } = await supertest(app)
-          .post(`/api/pizza`)
+          .post(`/api/pizzas`)
           .send({
             name: mockedPizza.name,
             image: mockedPizza.image,
@@ -117,7 +117,7 @@ describe('pizza', () => {
       it('should return a 500 error', async () => {
         const pizzaServiceMock = mockPizzaService();
         const { statusCode } = await supertest(app)
-          .post(`/api/pizza`)
+          .post(`/api/pizzas`)
           .send(mockedPizza);
         expect(statusCode).toBe(500);
         expect(pizzaServiceMock).toBeCalled();
@@ -143,7 +143,7 @@ describe('pizza', () => {
     describe('given a pizza does exist', () => {
       it('should return a 200 and the pizza', async () => {
         const pizzas = await mockPizzas();
-        const { body, statusCode } = await supertest(app).get(`/api/pizza`);
+        const { body, statusCode } = await supertest(app).get(`/api/pizzas`);
         expect(statusCode).toBe(200);
         expect(body).toEqual(pizzas);
       });
@@ -151,7 +151,7 @@ describe('pizza', () => {
 
     describe('given no pizza does not exist', () => {
       it('should return a 404', async () => {
-        const { body, statusCode } = await supertest(app).get(`/api/pizza`);
+        const { body, statusCode } = await supertest(app).get(`/api/pizzas`);
         expect(statusCode).toBe(404);
         expect(body.statusCode).toBe(404);
         expect(body.message).toBe('Pizzas not found');
@@ -165,7 +165,7 @@ describe('pizza', () => {
         });
       it('should return a 500 error', async () => {
         const pizzaServiceMock = mockPizzaService();
-        const { statusCode } = await supertest(app).get(`/api/pizza`);
+        const { statusCode } = await supertest(app).get(`/api/pizzas`);
         expect(statusCode).toBe(500);
         expect(pizzaServiceMock).toBeCalled();
       });
@@ -185,7 +185,7 @@ describe('pizza', () => {
       it('should return a 200 and the pizza', async () => {
         const pizza = await mockPizza();
         const { body, statusCode } = await supertest(app).get(
-          `/api/pizza/${pizza.id}`
+          `/api/pizzas/${pizza.id}`
         );
         expect(statusCode).toBe(200);
         expect(body).toEqual(pizza);
@@ -196,7 +196,7 @@ describe('pizza', () => {
       it('should return a 422', async () => {
         const pizzaId = '6473dcfab93afd651b171a5';
         const { body, statusCode } = await supertest(app).get(
-          `/api/pizza/${pizzaId}`
+          `/api/pizzas/${pizzaId}`
         );
         expect(statusCode).toBe(422);
         expect(body.statusCode).toBe(422);
@@ -210,7 +210,7 @@ describe('pizza', () => {
       it('should return a 404', async () => {
         const pizzaId = '6473dcfab93afd651b171a56';
         const { body, statusCode } = await supertest(app).get(
-          `/api/pizza/${pizzaId}`
+          `/api/pizzas/${pizzaId}`
         );
         expect(statusCode).toBe(404);
         expect(body.statusCode).toBe(404);
@@ -227,7 +227,7 @@ describe('pizza', () => {
         const pizzaServiceMock = mockPizzaService();
         const pizzaId = '6473dcfab93afd651b171a56';
         const { statusCode } = await supertest(app).get(
-          `/api/pizza/${pizzaId}`
+          `/api/pizzas/${pizzaId}`
         );
         expect(statusCode).toBe(500);
         expect(pizzaServiceMock).toBeCalled();
@@ -248,7 +248,7 @@ describe('pizza', () => {
       it('should return a 200 and the pizza', async () => {
         const pizza = await mockPizza();
         const { body, statusCode } = await supertest(app)
-          .put(`/api/pizza/${pizza.id}`)
+          .put(`/api/pizzas/${pizza.id}`)
           .send(mockedPizza);
         expect(statusCode).toBe(200);
         const { id, name, image, price, updatedAt, createdAt } = body;
@@ -263,7 +263,7 @@ describe('pizza', () => {
       it('missing: should return a 422', async () => {
         const pizza = await mockPizza();
         const { body, statusCode } = await supertest(app)
-          .put(`/api/pizza/${pizza.id}`)
+          .put(`/api/pizzas/${pizza.id}`)
           .send({
             image: mockedPizza.image,
             price: mockedPizza.price,
@@ -276,7 +276,7 @@ describe('pizza', () => {
       it('number: should return a 422', async () => {
         const pizzaId = '6473dcfab93afd651b171a56';
         const { body, statusCode } = await supertest(app)
-          .put(`/api/pizza/${pizzaId}`)
+          .put(`/api/pizzas/${pizzaId}`)
           .send({
             name: 50,
             image: mockedPizza.image,
@@ -292,7 +292,7 @@ describe('pizza', () => {
       it('missing: should return a 422', async () => {
         const pizzaId = '6473dcfab93afd651b171a56';
         const { body, statusCode } = await supertest(app)
-          .put(`/api/pizza/${pizzaId}`)
+          .put(`/api/pizzas/${pizzaId}`)
           .send({
             name: mockedPizza.name,
             price: mockedPizza.price,
@@ -305,7 +305,7 @@ describe('pizza', () => {
       it('not a string: should return a 422', async () => {
         const pizzaId = '6473dcfab93afd651b171a56';
         const { body, statusCode } = await supertest(app)
-          .put(`/api/pizza/${pizzaId}`)
+          .put(`/api/pizzas/${pizzaId}`)
           .send({
             name: mockedPizza.name,
             image: 5,
@@ -321,7 +321,7 @@ describe('pizza', () => {
       it('missing: should return a 422', async () => {
         const pizzaId = '6473dcfab93afd651b171a56';
         const { body, statusCode } = await supertest(app)
-          .put(`/api/pizza/${pizzaId}`)
+          .put(`/api/pizzas/${pizzaId}`)
           .send({
             name: mockedPizza.name,
             image: mockedPizza.image,
@@ -334,7 +334,7 @@ describe('pizza', () => {
       it('string: should return a 422', async () => {
         const pizzaId = '6473dcfab93afd651b171a56';
         const { body, statusCode } = await supertest(app)
-          .put(`/api/pizza/${pizzaId}`)
+          .put(`/api/pizzas/${pizzaId}`)
           .send({
             name: mockedPizza.name,
             image: mockedPizza.image,
@@ -350,7 +350,7 @@ describe('pizza', () => {
       it('should return a 422', async () => {
         const pizzaId = '6473dcfab93afd651b171a5';
         const { body, statusCode } = await supertest(app)
-          .put(`/api/pizza/${pizzaId}`)
+          .put(`/api/pizzas/${pizzaId}`)
           .send({
             name: mockedPizza.name,
             image: mockedPizza.image,
@@ -368,7 +368,7 @@ describe('pizza', () => {
       it('should return a 404 error', async () => {
         const pizzaId = '6473dcfab93afd651b171a56';
         const { body, statusCode } = await supertest(app)
-          .put(`/api/pizza/${pizzaId}`)
+          .put(`/api/pizzas/${pizzaId}`)
           .send(mockedPizza);
         expect(statusCode).toBe(404);
         expect(body.statusCode).toBe(404);
@@ -388,7 +388,7 @@ describe('pizza', () => {
         const pizzaServiceMock = mockPizzaService();
         const pizzaId = '6473dcfab93afd651b171a56';
         const { statusCode } = await supertest(app)
-          .put(`/api/pizza/${pizzaId}`)
+          .put(`/api/pizzas/${pizzaId}`)
           .send(mockedPizza);
         expect(statusCode).toBe(500);
         expect(pizzaServiceMock).toBeCalled();
@@ -409,7 +409,7 @@ describe('pizza', () => {
       it('should return a 200 response with the pizza', async () => {
         const pizza = await mockPizza();
         const { body, statusCode } = await supertest(app).delete(
-          `/api/pizza/${pizza.id}`
+          `/api/pizzas/${pizza.id}`
         );
         expect(statusCode).toBe(200);
         expect(body).toEqual({ message: 'Pizza deleted successfully' });
@@ -420,7 +420,7 @@ describe('pizza', () => {
       it('should return a 422 error', async () => {
         const pizzaId = '6473dcfab93afd651b171a5';
         const { body, statusCode } = await supertest(app).delete(
-          `/api/pizza/${pizzaId}`
+          `/api/pizzas/${pizzaId}`
         );
         expect(statusCode).toBe(422);
         expect(body.statusCode).toBe(422);
@@ -434,7 +434,7 @@ describe('pizza', () => {
       it('should return a 404 error', async () => {
         const pizzaId = new mongoose.Types.ObjectId().toHexString();
         const { body, statusCode } = await supertest(app).delete(
-          `/api/pizza/${pizzaId}`
+          `/api/pizzas/${pizzaId}`
         );
         expect(statusCode).toBe(404);
         expect(body.statusCode).toBe(404);
@@ -453,7 +453,7 @@ describe('pizza', () => {
         const pizzaServiceMock = mockPizzaService();
         const pizzaId = new mongoose.Types.ObjectId().toHexString();
         const { statusCode } = await supertest(app).delete(
-          `/api/pizza/${pizzaId}`
+          `/api/pizzas/${pizzaId}`
         );
         expect(statusCode).toBe(500);
         expect(pizzaServiceMock).toBeCalled();

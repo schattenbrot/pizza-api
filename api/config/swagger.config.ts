@@ -37,8 +37,6 @@ const swaggerDocs = (app: Express) => {
   app.get('/docs.json', (req, res) => {
     res.json(swaggerSpec);
   });
-
-  logger.info(`Docs available at http://localhost:${PORT}/docs`);
 };
 
 // export default swaggerSpec;
