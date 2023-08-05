@@ -1,6 +1,7 @@
 import { RequestHandler } from 'express';
-import * as pizza from './pizza';
-import * as order from './order';
+import * as user from './user.validators';
+import * as pizza from './pizza.validator';
+import * as order from './order.validator';
 import { validationResult } from 'express-validator';
 import createHttpError from 'http-errors';
 
@@ -8,6 +9,10 @@ const validate: RequestHandler = (req, res, next) => {
   const errors = validationResult(req);
   const err = errors.array().find(err => err.type === 'field');
   if (err && err.type === 'field') {
+    if (err.path === 'password') {
+      err.value = '';
+    }
+
     return next(
       createHttpError(
         422,
@@ -18,4 +23,4 @@ const validate: RequestHandler = (req, res, next) => {
   next();
 };
 
-export default { validate, pizza, order };
+export default { validate, user, pizza, order };

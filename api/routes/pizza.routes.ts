@@ -1,11 +1,13 @@
 import { Router } from 'express';
+import 'express-async-errors';
+
 import {
   createPizza,
   deletePizzaById,
   getAllPizzas,
   getPizzaById,
   updatePizzaById,
-} from '../controllers/pizza';
+} from '../controllers/pizza.contoller';
 import validators from '../validators';
 
 const router = Router();

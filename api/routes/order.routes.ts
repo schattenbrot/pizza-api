@@ -1,5 +1,6 @@
 import { Router } from 'express';
-import validators from '../validators';
+import 'express-async-errors';
+
 import {
   createOrder,
   deleteOrderById,
@@ -7,7 +8,8 @@ import {
   getOrderById,
   updateOrderById,
   updateOrderedPizzaStatusById,
-} from '../controllers/order';
+} from '../controllers/order.controller';
+import validators from '../validators';
 
 const router = Router();
 
@@ -235,6 +237,7 @@ router.put(
  *                   - delivering
  *                   - done
  *                 description: The new status of the Order.
+ *                 example: 3
  *     responses:
  *       '200':
  *         description: Successful operation

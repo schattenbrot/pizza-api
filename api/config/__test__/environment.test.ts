@@ -6,8 +6,8 @@ describe('Configuration', () => {
   it('should have default values if environment variables are not set', async () => {
     delete process.env.NODE_ENV; // gets set to test when using jest
 
-    const environment = require('../utils/environment');
-    const app = require('../utils/express');
+    const environment = require('../environment.config');
+    const app = require('../app.config');
 
     expect(environment.SERVER).toBe('localhost');
     expect(environment.NODE_ENV).toBe('development');
@@ -32,7 +32,7 @@ describe('Configuration', () => {
     process.env.DATABASE_USER = 'admin';
     process.env.DATABASE_PASSWORD = 'secret';
 
-    const updatedEnvironment = require('../utils/environment');
+    const updatedEnvironment = require('../environment.config');
 
     expect(updatedEnvironment.SERVER).toBe('example.com');
     expect(updatedEnvironment.NODE_ENV).toBe('production');

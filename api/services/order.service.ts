@@ -1,19 +1,24 @@
-import OrderModel, { Order, PizzaStatus } from '../models/order';
+import {
+  Order,
+  IOrderDocument,
+  IOrder,
+  PizzaStatus,
+} from '../models/order.model';
 
-const createOrder = async (order: Order) => {
-  return await OrderModel.create(order);
+const createOrder = async (order: IOrder) => {
+  return Order.create(order);
 };
 
 const getAllOrders = async () => {
-  return await OrderModel.find();
+  return await Order.find();
 };
 
 const getOrderById = async (orderId: string) => {
-  return await OrderModel.findById(orderId);
+  return await Order.findById(orderId);
 };
 
-const updateOrderById = async (orderId: string, order: Order) => {
-  return await OrderModel.findByIdAndUpdate(orderId, order, { new: true });
+const updateOrderById = async (orderId: string, order: IOrder) => {
+  return await Order.findByIdAndUpdate(orderId, order, { new: true });
 };
 
 const updateOrderedPizzaStatusById = async (
@@ -21,7 +26,7 @@ const updateOrderedPizzaStatusById = async (
   index: number,
   status: PizzaStatus
 ) => {
-  return await OrderModel.findByIdAndUpdate(
+  return await Order.findByIdAndUpdate(
     orderId,
     {
       $set: {
@@ -33,7 +38,7 @@ const updateOrderedPizzaStatusById = async (
 };
 
 const deleteOrderById = async (orderId: string) => {
-  return await OrderModel.findByIdAndDelete(orderId);
+  return await Order.findByIdAndDelete(orderId);
 };
 
 export default {

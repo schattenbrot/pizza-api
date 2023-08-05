@@ -1,9 +1,10 @@
 import { Express } from 'express';
 import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
+
 import { version } from '../../package.json';
-import logger from './logger';
-import { PORT, SERVER } from './environment';
+import logger from '../utils/logger';
+import { PORT, SERVER } from './environment.config';
 
 const options: swaggerJSDoc.Options = {
   definition: {
@@ -36,8 +37,6 @@ const swaggerDocs = (app: Express) => {
   app.get('/docs.json', (req, res) => {
     res.json(swaggerSpec);
   });
-
-  logger.info(`Docs available at http://localhost:${PORT}/docs`);
 };
 
 // export default swaggerSpec;

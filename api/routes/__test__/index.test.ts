@@ -1,5 +1,5 @@
 import supertest from 'supertest';
-import app from '../utils/express';
+import app from '../../config/app.config';
 
 describe('default', () => {
   // ----------------------------------------------------------------

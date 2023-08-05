@@ -2,10 +2,11 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 import express from 'express';
 import routes from '../routes';
-import corsOptions from './corsOptions';
-import errorHandler from './errorHandler';
-import swaggerDocs from './swagger';
+import corsOptions from './cors.config';
+import errorHandler from '../middlewares/errorHandler';
+import swaggerDocs from './swagger.config';
 import createHttpError from 'http-errors';
+import 'express-async-errors';
 
 const app = express();
 
