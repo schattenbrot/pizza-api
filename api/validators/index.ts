@@ -1,4 +1,5 @@
 import { RequestHandler } from 'express';
+import * as auth from './auth.validator';
 import * as user from './user.validators';
 import * as pizza from './pizza.validator';
 import * as order from './order.validator';
@@ -23,4 +24,4 @@ const validate: RequestHandler = (req, res, next) => {
   next();
 };
 
-export default { validate, user, pizza, order };
+export default { validate, auth, user, pizza, order };

@@ -4,6 +4,8 @@ import bcrypt from 'bcrypt';
 export interface IUser {
   email: string;
   password: string;
+  resetToken?: string;
+  resetTokenExpires?: number;
   avatar?: string;
 }
 
@@ -22,6 +24,16 @@ const UserSchema = new mongoose.Schema(
       required: true,
       select: false,
     },
+    resetToken: {
+      type: String,
+      required: false,
+      select: false,
+    },
+    resetTokenExpires: {
+      type: Number,
+      required: false,
+      select: false,
+    },
     avatar: {
       type: String,
       required: false,
@@ -33,6 +45,7 @@ const UserSchema = new mongoose.Schema(
       transform(doc, ret, options) {
         ret.id = ret._id;
         delete ret._id;
+        delete ret.password;
       },
       useProjection: true,
       versionKey: false,

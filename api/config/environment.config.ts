@@ -11,6 +11,7 @@ type Environment = {
   DATABASE_URL: string;
   DATABASE_PORT: number;
   DATABASE_NAME: string;
+  JWT_SECRET: string;
   AUTH?: {
     DATABASE_USER: string;
     DATABASE_PASSWORD: string;
@@ -27,6 +28,7 @@ export const DATABASE_PORT = parseInt(process.env.DATABASE_PORT ?? '27017');
 export const DATABASE_NAME = process.env.DATABASE_NAME ?? 'pizzaShop';
 export const DATABASE_USER = process.env.DATABASE_USER;
 export const DATABASE_PASSWORD = process.env.DATABASE_PASSWORD;
+export const JWT_SECRET = process.env.JWT_SECRET ?? 'supersecret';
 
 const environment: Environment = {
   NODE_ENV,
@@ -37,6 +39,7 @@ const environment: Environment = {
   DATABASE_URL,
   DATABASE_PORT,
   DATABASE_NAME,
+  JWT_SECRET,
 };
 
 if (DATABASE_USER && DATABASE_PASSWORD) {

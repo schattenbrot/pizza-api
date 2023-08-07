@@ -1,4 +1,4 @@
-import mongoose, { mongo } from 'mongoose';
+import mongoose from 'mongoose';
 import supertest from 'supertest';
 
 import app from '../../config/app.config';
@@ -141,7 +141,7 @@ describe('users', () => {
           .send(mockedUser)
           .expect(500);
         expect(body.statusCode).toBe(500);
-        console.log(body.message);
+        expect(body.message).toBe('Internal Server Error');
         expect(userServiceMock).toBeCalledWith(mockedUser);
       });
     });
@@ -495,7 +495,6 @@ describe('users', () => {
           .delete(`/api/users/${userId}`)
           .expect(500);
         expect(body.statusCode).toBe(500);
-        console.log(body.message);
         expect(userServiceMock).toBeCalledWith(userId);
       });
     });

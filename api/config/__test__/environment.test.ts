@@ -17,6 +17,7 @@ describe('Configuration', () => {
     expect(environment.DATABASE_URL).toBe('localhost');
     expect(environment.DATABASE_PORT).toBe(27017);
     expect(environment.DATABASE_NAME).toBe('pizzaShop');
+    expect(environment.JWT_SECRET).toBe('supersecret');
     expect(environment.AUTH).toBeUndefined();
   });
 
@@ -31,6 +32,7 @@ describe('Configuration', () => {
     process.env.DATABASE_NAME = 'myDB';
     process.env.DATABASE_USER = 'admin';
     process.env.DATABASE_PASSWORD = 'secret';
+    process.env.JWT_SECRET = 'updatedsupersecret';
 
     const updatedEnvironment = require('../environment.config');
 
@@ -44,5 +46,6 @@ describe('Configuration', () => {
     expect(updatedEnvironment.DATABASE_NAME).toBe('myDB');
     expect(updatedEnvironment.DATABASE_USER).toBe('admin');
     expect(updatedEnvironment.DATABASE_PASSWORD).toBe('secret');
+    expect(updatedEnvironment.JWT_SECRET).toBe('updatedsupersecret');
   });
 });
