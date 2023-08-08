@@ -17,12 +17,9 @@ const getUserByEmail = async (email: string) => {
 };
 
 const getUserByResetToken = async (token: string) => {
-  return User.findOne({ resetToken: token })
-    .select('+resetToken +resetTokenExpires')
-    .then(user => {
-      console.log(user);
-      return user;
-    });
+  return User.findOne({ resetToken: token }).select(
+    '+resetToken +resetTokenExpires'
+  );
 };
 
 const deletePizzaById = async (userId: string) => {

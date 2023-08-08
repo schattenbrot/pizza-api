@@ -2,9 +2,8 @@ import mongoose from 'mongoose';
 import supertest from 'supertest';
 
 import app from '../../config/app.config';
-import { IUser, IUserDocument, User } from '../../models/user.model';
+import { IUser, User } from '../../models/user.model';
 import userService from '../../services/user.service';
-import * as tokenHelper from '../../utils/resetTokenExpiration';
 import { randomBytes } from 'crypto';
 
 const mockedUser: IUser = {
@@ -372,28 +371,16 @@ describe('auth', () => {
     describe('given the reset password was successful', () => {
       it('should return the status 200 an empty object', async () => {
         const mockedToken = randomBytes(12).toString('hex');
-        const createdUser = await userService.createUser(mockedUser);
-        const user = await userService.getUserById(createdUser.id);
-        user!.resetToken = mockedToken;
-        user!.resetTokenExpires = Date.now();
-        User.findByIdAndUpdate(user?.id, {
+        const user = await userService.createUser(mockedUser);
+        await User.findByIdAndUpdate(user.id, {
           resetToken: mockedToken,
           resetTokenExpires: Date.now() + 3600000,
         });
-        user!.save();
-        const userServiceMock = jest
-          .spyOn(userService, 'getUserByResetToken')
-          .mockResolvedValueOnce(await userService.getUserById(user!.id));
-        const tokenExpiredMock = jest
-          .spyOn(tokenHelper, 'default')
-          // .mockImplementationOnce(() => true);
-          .mockReturnValueOnce(false);
         const { body } = await supertest(app)
           .post(`/api/auth/password-reset/${mockedToken}`)
           .send(payload)
           .expect(200);
         expect(body).toEqual({});
-        // expect(userServiceMock).toBeCalledWith(mockedToken);
       });
     });
 
@@ -474,31 +461,21 @@ describe('auth', () => {
       });
     });
 
-    // describe('given the user is missing reset token or expiration', () => {
-    //   it('should return the status 403 and an error message', async () => {
-    //     const mockedToken = randomBytes(12).toString('hex');
-    //     const { body: user } = await supertest(app)
-    //       .post('/api/users')
-    //       .send(mockedUser)
-    //       .expect(201);
-    //     jest.clearAllMocks();
-    //     const user2 = await userService.createUser({
-    //       email: 'test+err@example.com',
-    //       password: mockedUser.password,
-    //     });
-    //     const retrievedUser = await userService.getUserById(user2.id);
-    //     const userServiceMock = jest
-    //       .spyOn(userService, 'getUserByResetToken')
-    //       .mockResolvedValueOnce(user);
-    //     const { body } = await supertest(app)
-    //       .post(`/api/auth/password-reset/${mockedToken}`)
-    //       .send(payload)
-    //       .expect(403);
-    //     expect(body.statusCode).toEqual(403);
-    //     expect(body.message).toEqual('Token invalid');
-    //     expect(userServiceMock).toBeCalledWith(mockedToken);
-    //   });
-    // });
+    describe('given the user is missing reset token or expiration', () => {
+      it('resetTokenExpired: should return the status 403 and an error message', async () => {
+        const mockedToken = randomBytes(12).toString('hex');
+        const user = await userService.createUser(mockedUser);
+        await User.findByIdAndUpdate(user.id, {
+          resetToken: mockedToken,
+        });
+        const { body } = await supertest(app)
+          .post(`/api/auth/password-reset/${mockedToken}`)
+          .send(payload)
+          .expect(403);
+        expect(body.statusCode).toEqual(403);
+        expect(body.message).toEqual('Token invalid');
+      });
+    });
 
     describe('given the reset token is expired', () => {
       it('should return the status 403 and an error message', async () => {

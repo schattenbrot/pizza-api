@@ -104,7 +104,7 @@ export const updatePassword: RequestHandler<
   if (!user) {
     throw createHttpError(403, 'Token invalid');
   }
-  if (!user.resetToken || !user.resetTokenExpires) {
+  if (!user.resetTokenExpires) {
     throw createHttpError(403, 'Token invalid');
   }
 
@@ -116,7 +116,7 @@ export const updatePassword: RequestHandler<
   user.password = password;
   user.resetToken = undefined;
   user.resetTokenExpires = undefined;
-  user.save();
+  await user.save();
 
   // get user from token
   res.send();
