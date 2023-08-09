@@ -18,6 +18,8 @@ export interface IOrder {
     pizza: IPizza;
     status: PizzaStatus;
   }[];
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 export interface IOrderDocument extends IOrder, mongoose.Document {}
