@@ -128,8 +128,6 @@ const OrderSchema = new mongoose.Schema<IOrderDocument>(
       transform(doc, ret, options) {
         ret.id = ret._id.toHexString();
         delete ret._id;
-        ret.updatedAt = doc.updatedAt.toISOString();
-        ret.createdAt = doc.createdAt.toISOString();
       },
       versionKey: false,
     },

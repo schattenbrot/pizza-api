@@ -191,10 +191,17 @@ describe('order', () => {
   describe('get all orders route', () => {
     const mockOrders = async () => {
       let orders: IOrderDocument[] = [];
+      const pizza = await Pizza.create(mockedPizza);
 
       for (let i = 0; i < 3; i++) {
-        const order = await orderService.createOrder(mockedOrder);
-        orders.push(order.toObject());
+        const { body: order } = await supertest(app)
+          .post('/api/orders')
+          .send({
+            customer: mockedOrder.customer,
+            pizzas: [pizza.id],
+          })
+          .expect(201);
+        orders.push(order);
       }
 
       return orders;
@@ -260,8 +267,15 @@ describe('order', () => {
   // ----------------------------------------------------------------
   describe('get order route', () => {
     const mockOrder = async () => {
-      const order = await orderService.createOrder(mockedOrder);
-      return order.toObject();
+      const pizza = await Pizza.create(mockedPizza);
+      const { body: order } = await supertest(app)
+        .post('/api/orders')
+        .send({
+          customer: mockedOrder.customer,
+          pizzas: [pizza.id],
+        })
+        .expect(201);
+      return order;
     };
 
     describe('given the order does exist', () => {
