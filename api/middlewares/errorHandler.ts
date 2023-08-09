@@ -21,6 +21,20 @@ import logger from '../utils/logger';
  *           type: string
  *           nullable: true
  *           description: The error stack trace (available in development mode only).
+ *     ErrorUnauthorized:
+ *       type: object
+ *       properties:
+ *         statusCode:
+ *           type: number
+ *           description: The status code of the error response.
+ *           example: 401
+ *         message:
+ *           type: string
+ *           description: The error message.
+ *         stack:
+ *           type: string
+ *           nullable: true
+ *           description: The error stack trace (available in development mode only).
  *     ErrorNotFound:
  *       type: object
  *       properties:

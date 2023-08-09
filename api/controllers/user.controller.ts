@@ -1,29 +1,33 @@
-import { Request, Response } from 'express';
-import { IUser } from '../models/user.model';
-import userService from '../services/user.service';
+import { RequestHandler } from 'express';
 import createHttpError from 'http-errors';
+import bcrypt from 'bcrypt';
+import userService from '../services/user.service';
 
-export const createUser = async (
-  req: Request<{}, {}, IUser>,
-  res: Response
-) => {
-  const user = req.body;
-  const createdUser = await userService.createUser(user);
+export const createUser: RequestHandler<
+  {},
+  {},
+  { email: string; password: string }
+> = async (req, res) => {
+  const { email, password } = req.body;
+  const createdUser = await userService.createUser({ email, password });
   res.status(201).send(createdUser);
 };
 
-export const getAllUsers = async (req: Request, res: Response) => {
+export const getAllUsers: RequestHandler = async (req, res) => {
   const users = await userService.getAllUsers();
-  if (users.length === 0) {
-    throw createHttpError(404, 'Users not found');
-  }
   res.send(users);
 };
 
-export const getUserById = async (
-  req: Request<{ id: string }>,
-  res: Response
-) => {
+export const getCurrentUser: RequestHandler = async (req, res) => {
+  const { id } = req.currentUser!;
+  const user = await userService.getUserById(id);
+  if (!user) {
+    throw createHttpError(404, 'User not found');
+  }
+  res.send(user);
+};
+
+export const getUserById: RequestHandler<{ id: string }> = async (req, res) => {
   const { id } = req.params;
   const user = await userService.getUserById(id);
   if (!user) {
@@ -32,10 +36,27 @@ export const getUserById = async (
   res.send(user);
 };
 
-export const updateUserEmailById = async (
-  req: Request<{ id: string }, {}, { email: string }>,
-  res: Response
-) => {
+export const updateCurrentUserEmail: RequestHandler<
+  {},
+  {},
+  { email: string }
+> = async (req, res) => {
+  const { id } = req.currentUser!;
+  const { email } = req.body;
+  const user = await userService.getUserById(id);
+  if (!user) {
+    throw createHttpError(404, 'User not found');
+  }
+  user.email = email;
+  const updatedUser = await user.save();
+  res.send(updatedUser);
+};
+
+export const updateUserEmailById: RequestHandler<
+  { id: string },
+  {},
+  { email: string }
+> = async (req, res) => {
   const { id } = req.params;
   const { email } = req.body;
   const user = await userService.getUserById(id);
@@ -47,10 +68,34 @@ export const updateUserEmailById = async (
   res.send(updatedUser);
 };
 
-export const updateUserPasswordById = async (
-  req: Request<{ id: string }, {}, { password: string }>,
-  res: Response
-) => {
+export const updateCurrentUserPassword: RequestHandler<
+  {},
+  {},
+  { password: string; oldPassword: string }
+> = async (req, res) => {
+  const { id } = req.currentUser!;
+  const { password, oldPassword } = req.body;
+
+  const user = await userService.getUserByIdWithPassword(id);
+  if (!user) {
+    throw createHttpError(404, 'User not found');
+  }
+
+  const isMatchingPassword = await bcrypt.compare(oldPassword, user.password);
+  if (!isMatchingPassword) {
+    throw createHttpError(400, 'Invalid credentials');
+  }
+
+  user.password = password;
+  const updatedUser = await user.save();
+  res.send(updatedUser);
+};
+
+export const updateUserPasswordById: RequestHandler<
+  { id: string },
+  {},
+  { password: string }
+> = async (req, res) => {
   const { id } = req.params;
   const { password } = req.body;
   const user = await userService.getUserById(id);
@@ -62,13 +107,10 @@ export const updateUserPasswordById = async (
   res.send(updatedUser);
 };
 
-export const deleteUser = async (
-  req: Request<{ id: string }>,
-  res: Response
-) => {
+export const deleteUser: RequestHandler<{ id: string }> = async (req, res) => {
   const { id } = req.params;
-  const deletedPizza = await userService.deletePizzaById(id);
-  if (!deletedPizza) {
+  const deletedUser = await userService.deleteUserById(id);
+  if (!deletedUser) {
     throw createHttpError(404, 'User not found');
   }
   res.send({ message: 'User deleted successfully' });

@@ -1,12 +1,14 @@
 import bodyParser from 'body-parser';
-import cors from 'cors';
 import express from 'express';
-import routes from '../routes';
+import 'express-async-errors';
+import createHttpError from 'http-errors';
+import cookieSession from 'cookie-session';
+import cors from 'cors';
+
 import corsOptions from './cors.config';
 import errorHandler from '../middlewares/errorHandler';
 import swaggerDocs from './swagger.config';
-import createHttpError from 'http-errors';
-import 'express-async-errors';
+import routes from '../routes';
 
 const app = express();
 
@@ -14,6 +16,12 @@ app.use(cors(corsOptions));
 
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(
+  cookieSession({
+    signed: false,
+    secure: process.env.NODE_ENV === 'production',
+  })
+);
 
 swaggerDocs(app);
 

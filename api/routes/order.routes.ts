@@ -10,6 +10,8 @@ import {
   updateOrderedPizzaStatusById,
 } from '../controllers/order.controller';
 import validators from '../validators';
+import { currentUser } from '../middlewares/currentUser';
+import { isAuth } from '../middlewares/isAuth';
 
 const router = Router();
 
@@ -80,13 +82,19 @@ router.post(
  *       - Order
  *     responses:
  *       '200':
- *         description: Successful operation
+ *         description: Successful operation (Requires auth)
  *         content:
  *           application/json:
  *             schema:
  *               type: array
  *               items:
  *                 $ref: '#/components/schemas/Order'
+ *       '401':
+ *         description: Unauthorized
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorUnauthorized'
  *       '422':
  *         description: Unprocessable Entity
  *         content:
@@ -100,7 +108,7 @@ router.post(
  *             schema:
  *               $ref: '#/components/schemas/ErrorResponse'
  */
-router.get('/', getAllOrders);
+router.get('/', currentUser, isAuth, getAllOrders);
 
 /**
  * @swagger
@@ -145,6 +153,7 @@ router.get('/', getAllOrders);
  */
 router.get(
   '/:id',
+  currentUser,
   validators.order.getOrderById,
   validators.validate,
   getOrderById
@@ -154,7 +163,7 @@ router.get(
  * @swagger
  * /order/{id}:
  *   put:
- *     summary: Update an Order by ID
+ *     summary: Update an Order by ID (Requires auth)
  *     tags:
  *       - Order
  *     parameters:
@@ -178,6 +187,12 @@ router.get(
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Order'
+ *       '401':
+ *         description: Unauthorized
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorUnauthorized'
  *       '404':
  *         description: Order not found
  *         content:
@@ -199,6 +214,8 @@ router.get(
  */
 router.put(
   '/:id',
+  currentUser,
+  isAuth,
   validators.order.updateOrder,
   validators.validate,
   updateOrderById
@@ -208,7 +225,7 @@ router.put(
  * @swagger
  * /order/{id}/status:
  *   patch:
- *     summary: Update the status of an Order by ID
+ *     summary: Update the status of an Order by ID (Requries auth)
  *     tags:
  *       - Order
  *     parameters:
@@ -245,6 +262,12 @@ router.put(
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Order'
+ *       '401':
+ *         description: Unauthorized
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorUnauthorized'
  *       '404':
  *         description: Order not found
  *         content:
@@ -266,6 +289,8 @@ router.put(
  */
 router.patch(
   '/:id/status',
+  currentUser,
+  isAuth,
   validators.order.updateOrderedPizzaStatus,
   validators.validate,
   updateOrderedPizzaStatusById
@@ -275,7 +300,7 @@ router.patch(
  * @swagger
  * /order/{id}:
  *   delete:
- *     summary: Delete an Order by ID
+ *     summary: Delete an Order by ID (Requries auth)
  *     tags:
  *       - Order
  *     parameters:
@@ -292,7 +317,18 @@ router.patch(
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Order'
+ *               application/json:
+ *                 type: object
+ *                 properties:
+ *                    message:
+ *                      type: string
+ *                      example: Order deleted successfully
+ *       '401':
+ *         description: Unauthorized
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorUnauthorized'
  *       '404':
  *         description: Order not found
  *         content:
@@ -314,6 +350,8 @@ router.patch(
  */
 router.delete(
   '/:id',
+  currentUser,
+  isAuth,
   validators.order.deleteOrder,
   validators.validate,
   deleteOrderById

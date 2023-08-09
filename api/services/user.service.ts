@@ -12,7 +12,21 @@ const getUserById = async (userId: string) => {
   return User.findById(userId);
 };
 
-const deletePizzaById = async (userId: string) => {
+const getUserByIdWithPassword = async (userId: string) => {
+  return User.findById(userId).select('+password');
+};
+
+const getUserByEmail = async (email: string) => {
+  return User.findOne({ email }).select('+password');
+};
+
+const getUserByResetToken = async (token: string) => {
+  return User.findOne({ resetToken: token }).select(
+    '+resetToken +resetTokenExpires'
+  );
+};
+
+const deleteUserById = async (userId: string) => {
   return User.findByIdAndDelete(userId);
 };
 
@@ -20,5 +34,8 @@ export default {
   createUser,
   getAllUsers,
   getUserById,
-  deletePizzaById,
+  getUserByIdWithPassword,
+  getUserByEmail,
+  getUserByResetToken,
+  deleteUserById,
 };

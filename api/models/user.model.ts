@@ -4,10 +4,46 @@ import bcrypt from 'bcrypt';
 export interface IUser {
   email: string;
   password: string;
+  resetToken?: string;
+  resetTokenExpires?: number;
   avatar?: string;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 export interface IUserDocument extends IUser, mongoose.Document {}
+
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     User:
+ *       type: object
+ *       properties:
+ *         email:
+ *           type: string
+ *           format: email
+ *         password:
+ *           type: string
+ *           format: password
+ *         resetToken:
+ *           type: string
+ *         resetTokenExpires:
+ *           type: number
+ *         avatar:
+ *           type: string
+ *           format: url
+ *         createdAt:
+ *           type: string
+ *           form: datetime
+ *         updatedAt:
+ *           type: string
+ *           form: datetime
+ *       required:
+ *         - email
+ *         - password
+ *         - avatar
+ */
 
 const UserSchema = new mongoose.Schema(
   {
@@ -22,6 +58,16 @@ const UserSchema = new mongoose.Schema(
       required: true,
       select: false,
     },
+    resetToken: {
+      type: String,
+      required: false,
+      select: false,
+    },
+    resetTokenExpires: {
+      type: Number,
+      required: false,
+      select: false,
+    },
     avatar: {
       type: String,
       required: false,
@@ -33,6 +79,7 @@ const UserSchema = new mongoose.Schema(
       transform(doc, ret, options) {
         ret.id = ret._id;
         delete ret._id;
+        delete ret.password;
       },
       useProjection: true,
       versionKey: false,
@@ -41,8 +88,6 @@ const UserSchema = new mongoose.Schema(
       transform(doc, ret, options) {
         ret.id = ret._id.toHexString();
         delete ret._id;
-        ret.updatedAt = doc.updatedAt.toISOString();
-        ret.createdAt = doc.createdAt.toISOString();
       },
       useProjection: true,
       versionKey: false,

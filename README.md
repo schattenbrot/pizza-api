@@ -24,6 +24,7 @@ Customizing the server is possible using a `.env` file.
 | DATABASE_NAME     | yes      | string | `pizzaShop`   | The used mongo database name.                                                                                                            |
 | DATABASE_USER     | no       | string |               | The database connection username.                                                                                                        |
 | DATABASE_PASSWORD | no       | string |               | The database connection password.                                                                                                        |
+| JWT_SECRET        | yes      | string | `supersecret` | The used JWT secret.                                                                                                                     |
 
 If a DATABASE_USER is specified, then the DATABASE_PASSWORD also must be specified.
 
@@ -57,9 +58,11 @@ The latest testreport can be found [here](test-coverage.md).
 
 ## Contributing / TODO
 
-- Testing (unit tests? and postman/thunder client tests)
+- Customers (interaction with user and order)
+- User image upload
+- User roles?
 - Dockerfile
-- CI/CD
+- CI/CD überarbeiten
 
 ## License
 

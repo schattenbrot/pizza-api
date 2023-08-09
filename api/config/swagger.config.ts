@@ -23,7 +23,7 @@ const options: swaggerJSDoc.Options = {
   apis: [
     './api/routes/*.ts',
     './api/models/*.ts',
-    './api/utils/errorHandler.ts',
+    './api/middlewares/errorHandler.ts',
   ],
 };
 
