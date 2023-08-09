@@ -13,6 +13,8 @@ export interface ICustomer {
     city: string;
     country: string;
   };
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 export interface ICustomerDocument extends ICustomer, mongoose.Document {}

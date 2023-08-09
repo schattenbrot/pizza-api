@@ -10,24 +10,23 @@ const mockedUser: IUser = {
   password: 'abCD12!@',
 };
 
-const mockUser = async () => {
-  const user = await userService.createUser(mockedUser);
-  return user.toObject();
-};
-
-const mockUsers = async (user: IUserDocument | null = null) => {
+const mockUsers = async (currentUser: IUserDocument, cookie: string[]) => {
   let users: IUserDocument[] = [];
 
-  if (user) {
-    users.push(user);
+  if (currentUser) {
+    users.push(currentUser);
   }
 
   for (let i = 0; i < 3; i++) {
-    const user = await userService.createUser({
-      ...mockedUser,
-      email: `test+${i}@example.com`,
-    });
-    users.push(user.toObject());
+    const { body: user } = await supertest(app)
+      .post('/api/users')
+      .set('Cookie', cookie)
+      .send({
+        email: `test+${i}@example.com`,
+        password: mockedUser.password,
+      })
+      .expect(201);
+    users.push(user);
   }
 
   return users;
@@ -177,7 +176,7 @@ describe('users', () => {
     describe('given at least one user exists', () => {
       it('should return the status 200 and the list of users', async () => {
         const { user, cookie } = await signup();
-        const users = await mockUsers(user);
+        const users = await mockUsers(user, cookie);
         const { body } = await supertest(app)
           .get('/api/users')
           .set('Cookie', cookie)

@@ -162,9 +162,15 @@ describe('pizza', () => {
     const mockPizzas = async () => {
       let pizzas: IPizzaDocument[] = [];
 
+      const { cookie } = await signup();
       for (let i = 0; i < 3; i++) {
-        const pizza = await pizzaService.createPizza(mockedPizza);
-        pizzas.push(pizza.toObject());
+        // const pizza = await pizzaService.createPizza(mockedPizza);
+        const { body: pizza } = await supertest(app)
+          .post('/api/pizzas')
+          .set('Cookie', cookie)
+          .send(mockedPizza)
+          .expect(201);
+        pizzas.push(pizza);
       }
 
       return pizzas;
@@ -204,8 +210,12 @@ describe('pizza', () => {
   // ----------------------------------------------------------------
   describe('get pizza route', () => {
     const mockPizza = async () => {
-      const pizza = await pizzaService.createPizza(mockedPizza);
-      return pizza.toObject();
+      const { body: pizza } = await supertest(app)
+        .post('/api/pizzas')
+        .set('Cookie', (await signup()).cookie)
+        .send(mockedPizza)
+        .expect(201);
+      return pizza;
     };
 
     describe('given the pizza does exist', () => {

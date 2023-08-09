@@ -88,8 +88,6 @@ const UserSchema = new mongoose.Schema(
       transform(doc, ret, options) {
         ret.id = ret._id.toHexString();
         delete ret._id;
-        ret.updatedAt = doc.updatedAt && doc.updatedAt.toISOString();
-        ret.createdAt = doc.createdAt && doc.createdAt.toISOString();
       },
       useProjection: true,
       versionKey: false,

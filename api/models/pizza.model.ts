@@ -4,6 +4,8 @@ export interface IPizza {
   name: string;
   image: string;
   price: number;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 export interface IPizzaDocument extends IPizza, mongoose.Document {}
@@ -67,8 +69,6 @@ export const pizzaSchema = new mongoose.Schema(
       transform(doc, ret, options) {
         ret.id = ret._id.toHexString();
         delete ret._id;
-        ret.updatedAt = doc.updatedAt.toISOString();
-        ret.createdAt = doc.createdAt.toISOString();
       },
       versionKey: false,
     },

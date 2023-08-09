@@ -1,12 +1,15 @@
-import { Request, RequestHandler, Response } from 'express';
+import { RequestHandler } from 'express';
 import createHttpError from 'http-errors';
 import bcrypt from 'bcrypt';
-import { IUser } from '../models/user.model';
 import userService from '../services/user.service';
 
-export const createUser: RequestHandler<{}, {}, IUser> = async (req, res) => {
-  const user = req.body;
-  const createdUser = await userService.createUser(user);
+export const createUser: RequestHandler<
+  {},
+  {},
+  { email: string; password: string }
+> = async (req, res) => {
+  const { email, password } = req.body;
+  const createdUser = await userService.createUser({ email, password });
   res.status(201).send(createdUser);
 };
 
