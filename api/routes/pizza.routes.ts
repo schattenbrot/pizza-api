@@ -9,6 +9,8 @@ import {
   updatePizzaById,
 } from '../controllers/pizza.contoller';
 import validators from '../validators';
+import { currentUser } from '../middlewares/currentUser';
+import { isAuth } from '../middlewares/isAuth';
 
 const router = Router();
 
@@ -52,6 +54,8 @@ const router = Router();
  */
 router.post(
   '/',
+  currentUser,
+  isAuth,
   validators.pizza.createPizza,
   validators.validate,
   createPizza
@@ -189,6 +193,8 @@ router.get(
  */
 router.put(
   '/:id',
+  currentUser,
+  isAuth,
   validators.pizza.updatePizza,
   validators.validate,
   updatePizzaById
@@ -242,6 +248,8 @@ router.put(
  */
 router.delete(
   '/:id',
+  currentUser,
+  isAuth,
   validators.pizza.deletePizza,
   validators.validate,
   deletePizzaById

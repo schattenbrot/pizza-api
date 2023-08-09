@@ -18,38 +18,58 @@ describe('pizza', () => {
   describe('create pizza route', () => {
     describe('given the pizza is valid', () => {
       it('should return a 201 and the pizza', async () => {
-        const { body, statusCode } = await supertest(app)
+        const { cookie } = await signup();
+        const { body } = await supertest(app)
           .post(`/api/pizzas`)
-          .send(mockedPizza);
-        expect(statusCode).toBe(201);
+          .set('Cookie', cookie)
+          .send(mockedPizza)
+          .expect(201);
         expect(body.name).toBe(mockedPizza.name);
         expect(body.image).toBe(mockedPizza.image);
         expect(body.price).toBe(mockedPizza.price);
       });
     });
 
-    describe('given the pizza name is invalid', () => {
-      it('missing: should return a 422', async () => {
-        const { body, statusCode } = await supertest(app)
+    describe('given the user is not authorized', () => {
+      it('should return a 401', async () => {
+        const { body } = await supertest(app)
           .post(`/api/pizzas`)
           .send({
             image: mockedPizza.image,
             price: mockedPizza.price,
-          });
-        expect(statusCode).toBe(422);
+          })
+          .expect(401);
+        expect(body.statusCode).toBe(401);
+        expect(body.message).toBe('Unauthorized');
+      });
+    });
+
+    describe('given the pizza name is invalid', () => {
+      it('missing: should return a 422', async () => {
+        const { cookie } = await signup();
+        const { body } = await supertest(app)
+          .post(`/api/pizzas`)
+          .set('Cookie', cookie)
+          .send({
+            image: mockedPizza.image,
+            price: mockedPizza.price,
+          })
+          .expect(422);
         expect(body.statusCode).toBe(422);
         expect(body.message).toBe('Invalid value: [body / name] (undefined)');
       });
 
       it('number: should return a 422', async () => {
-        const { body, statusCode } = await supertest(app)
+        const { cookie } = await signup();
+        const { body } = await supertest(app)
           .post(`/api/pizzas`)
+          .set('Cookie', cookie)
           .send({
             name: 5,
             image: mockedPizza.image,
             price: mockedPizza.price,
-          });
-        expect(statusCode).toBe(422);
+          })
+          .expect(422);
         expect(body.statusCode).toBe(422);
         expect(body.message).toBe('Invalid value: [body / name] (5)');
       });
@@ -57,26 +77,30 @@ describe('pizza', () => {
 
     describe('given the pizza image is invalid', () => {
       it('missing: should return a 422', async () => {
-        const { body, statusCode } = await supertest(app)
+        const { cookie } = await signup();
+        const { body } = await supertest(app)
           .post(`/api/pizzas`)
+          .set('Cookie', cookie)
           .send({
             name: mockedPizza.name,
             price: mockedPizza.price,
-          });
-        expect(statusCode).toBe(422);
+          })
+          .expect(422);
         expect(body.statusCode).toBe(422);
         expect(body.message).toBe('Invalid value: [body / image] (undefined)');
       });
 
       it('number: should return a 422', async () => {
-        const { body, statusCode } = await supertest(app)
+        const { cookie } = await signup();
+        const { body } = await supertest(app)
           .post(`/api/pizzas`)
+          .set('Cookie', cookie)
           .send({
             name: mockedPizza.name,
             image: 5,
             price: mockedPizza.price,
-          });
-        expect(statusCode).toBe(422);
+          })
+          .expect(422);
         expect(body.statusCode).toBe(422);
         expect(body.message).toBe('Invalid value: [body / image] (5)');
       });
@@ -84,26 +108,30 @@ describe('pizza', () => {
 
     describe('given the pizza price is invalid', () => {
       it('missing: should return a 422', async () => {
-        const { body, statusCode } = await supertest(app)
+        const { cookie } = await signup();
+        const { body } = await supertest(app)
           .post(`/api/pizzas`)
+          .set('Cookie', cookie)
           .send({
             name: mockedPizza.name,
             image: mockedPizza.image,
-          });
-        expect(statusCode).toBe(422);
+          })
+          .expect(422);
         expect(body.statusCode).toBe(422);
         expect(body.message).toBe('Invalid value: [body / price] (undefined)');
       });
 
       it('wrong format: should return a 422', async () => {
-        const { body, statusCode } = await supertest(app)
+        const { cookie } = await signup();
+        const { body } = await supertest(app)
           .post(`/api/pizzas`)
+          .set('Cookie', cookie)
           .send({
             name: mockedPizza.name,
             image: mockedPizza.image,
             price: '5,99',
-          });
-        expect(statusCode).toBe(422);
+          })
+          .expect(422);
         expect(body.statusCode).toBe(422);
         expect(body.message).toBe('Invalid value: [body / price] (5,99)');
       });
@@ -115,11 +143,13 @@ describe('pizza', () => {
           throw new Error('error');
         });
       it('should return a 500 error', async () => {
+        const { cookie } = await signup();
         const pizzaServiceMock = mockPizzaService();
-        const { statusCode } = await supertest(app)
+        await supertest(app)
           .post(`/api/pizzas`)
-          .send(mockedPizza);
-        expect(statusCode).toBe(500);
+          .set('Cookie', cookie)
+          .send(mockedPizza)
+          .expect(500);
         expect(pizzaServiceMock).toBeCalled();
       });
     });
@@ -143,16 +173,14 @@ describe('pizza', () => {
     describe('given a pizza does exist', () => {
       it('should return a 200 and the pizza', async () => {
         const pizzas = await mockPizzas();
-        const { body, statusCode } = await supertest(app).get(`/api/pizzas`);
-        expect(statusCode).toBe(200);
+        const { body } = await supertest(app).get(`/api/pizzas`).expect(200);
         expect(body).toEqual(pizzas);
       });
     });
 
     describe('given no pizza does not exist', () => {
       it('should return a 404', async () => {
-        const { body, statusCode } = await supertest(app).get(`/api/pizzas`);
-        expect(statusCode).toBe(404);
+        const { body } = await supertest(app).get(`/api/pizzas`).expect(404);
         expect(body.statusCode).toBe(404);
         expect(body.message).toBe('Pizzas not found');
       });
@@ -165,8 +193,7 @@ describe('pizza', () => {
         });
       it('should return a 500 error', async () => {
         const pizzaServiceMock = mockPizzaService();
-        const { statusCode } = await supertest(app).get(`/api/pizzas`);
-        expect(statusCode).toBe(500);
+        await supertest(app).get(`/api/pizzas`).expect(500);
         expect(pizzaServiceMock).toBeCalled();
       });
     });
@@ -184,10 +211,9 @@ describe('pizza', () => {
     describe('given the pizza does exist', () => {
       it('should return a 200 and the pizza', async () => {
         const pizza = await mockPizza();
-        const { body, statusCode } = await supertest(app).get(
-          `/api/pizzas/${pizza.id}`
-        );
-        expect(statusCode).toBe(200);
+        const { body } = await supertest(app)
+          .get(`/api/pizzas/${pizza.id}`)
+          .expect(200);
         expect(body).toEqual(pizza);
       });
     });
@@ -195,10 +221,9 @@ describe('pizza', () => {
     describe('given the provided id is not an ObjectId', () => {
       it('should return a 422', async () => {
         const pizzaId = '6473dcfab93afd651b171a5';
-        const { body, statusCode } = await supertest(app).get(
-          `/api/pizzas/${pizzaId}`
-        );
-        expect(statusCode).toBe(422);
+        const { body } = await supertest(app)
+          .get(`/api/pizzas/${pizzaId}`)
+          .expect(422);
         expect(body.statusCode).toBe(422);
         expect(body.message).toBe(
           'Invalid ObjectId: [params / id] (6473dcfab93afd651b171a5)'
@@ -209,10 +234,9 @@ describe('pizza', () => {
     describe('given the pizza does not exist', () => {
       it('should return a 404', async () => {
         const pizzaId = '6473dcfab93afd651b171a56';
-        const { body, statusCode } = await supertest(app).get(
-          `/api/pizzas/${pizzaId}`
-        );
-        expect(statusCode).toBe(404);
+        const { body } = await supertest(app)
+          .get(`/api/pizzas/${pizzaId}`)
+          .expect(404);
         expect(body.statusCode).toBe(404);
         expect(body.message).toBe('Pizza not found');
       });
@@ -226,10 +250,7 @@ describe('pizza', () => {
       it('should return a 500 error', async () => {
         const pizzaServiceMock = mockPizzaService();
         const pizzaId = '6473dcfab93afd651b171a56';
-        const { statusCode } = await supertest(app).get(
-          `/api/pizzas/${pizzaId}`
-        );
-        expect(statusCode).toBe(500);
+        await supertest(app).get(`/api/pizzas/${pizzaId}`).expect(500);
         expect(pizzaServiceMock).toBeCalled();
       });
     });
@@ -246,11 +267,13 @@ describe('pizza', () => {
 
     describe('given the pizza is valid', () => {
       it('should return a 200 and the pizza', async () => {
+        const { cookie } = await signup();
         const pizza = await mockPizza();
-        const { body, statusCode } = await supertest(app)
+        const { body } = await supertest(app)
           .put(`/api/pizzas/${pizza.id}`)
-          .send(mockedPizza);
-        expect(statusCode).toBe(200);
+          .set('Cookie', cookie)
+          .send(mockedPizza)
+          .expect(200);
         const { id, name, image, price, updatedAt, createdAt } = body;
         expect(id).toEqual(pizza.id);
         expect(name).toEqual(pizza.name);
@@ -259,30 +282,49 @@ describe('pizza', () => {
       });
     });
 
-    describe('given the pizza name is invalid', () => {
-      it('missing: should return a 422', async () => {
+    describe('given the user is not authorized', () => {
+      it('should return a 401', async () => {
         const pizza = await mockPizza();
-        const { body, statusCode } = await supertest(app)
+        const { body } = await supertest(app)
           .put(`/api/pizzas/${pizza.id}`)
           .send({
             image: mockedPizza.image,
             price: mockedPizza.price,
-          });
-        expect(statusCode).toBe(422);
+          })
+          .expect(401);
+        expect(body.statusCode).toBe(401);
+        expect(body.message).toBe('Unauthorized');
+      });
+    });
+
+    describe('given the pizza name is invalid', () => {
+      it('missing: should return a 422', async () => {
+        const { cookie } = await signup();
+        const pizza = await mockPizza();
+        const { body } = await supertest(app)
+          .put(`/api/pizzas/${pizza.id}`)
+          .set('Cookie', cookie)
+          .send({
+            image: mockedPizza.image,
+            price: mockedPizza.price,
+          })
+          .expect(422);
         expect(body.statusCode).toBe(422);
         expect(body.message).toBe('Invalid value: [body / name] (undefined)');
       });
 
       it('number: should return a 422', async () => {
+        const { cookie } = await signup();
         const pizzaId = '6473dcfab93afd651b171a56';
-        const { body, statusCode } = await supertest(app)
+        const { body } = await supertest(app)
           .put(`/api/pizzas/${pizzaId}`)
+          .set('Cookie', cookie)
           .send({
             name: 50,
             image: mockedPizza.image,
             price: mockedPizza.price,
-          });
-        expect(statusCode).toBe(422);
+          })
+          .expect(422);
         expect(body.statusCode).toBe(422);
         expect(body.message).toBe('Invalid value: [body / name] (50)');
       });
@@ -290,28 +332,32 @@ describe('pizza', () => {
 
     describe('given the pizza image is invalid', () => {
       it('missing: should return a 422', async () => {
+        const { cookie } = await signup();
         const pizzaId = '6473dcfab93afd651b171a56';
-        const { body, statusCode } = await supertest(app)
+        const { body } = await supertest(app)
           .put(`/api/pizzas/${pizzaId}`)
+          .set('Cookie', cookie)
           .send({
             name: mockedPizza.name,
             price: mockedPizza.price,
-          });
-        expect(statusCode).toBe(422);
+          })
+          .expect(422);
         expect(body.statusCode).toBe(422);
         expect(body.message).toBe('Invalid value: [body / image] (undefined)');
       });
 
       it('not a string: should return a 422', async () => {
+        const { cookie } = await signup();
         const pizzaId = '6473dcfab93afd651b171a56';
-        const { body, statusCode } = await supertest(app)
+        const { body } = await supertest(app)
           .put(`/api/pizzas/${pizzaId}`)
+          .set('Cookie', cookie)
           .send({
             name: mockedPizza.name,
             image: 5,
             price: mockedPizza.price,
-          });
-        expect(statusCode).toBe(422);
+          })
+          .expect(422);
         expect(body.statusCode).toBe(422);
         expect(body.message).toBe('Invalid value: [body / image] (5)');
       });
@@ -319,28 +365,32 @@ describe('pizza', () => {
 
     describe('given the pizza price is invalid', () => {
       it('missing: should return a 422', async () => {
+        const { cookie } = await signup();
         const pizzaId = '6473dcfab93afd651b171a56';
-        const { body, statusCode } = await supertest(app)
+        const { body } = await supertest(app)
           .put(`/api/pizzas/${pizzaId}`)
+          .set('Cookie', cookie)
           .send({
             name: mockedPizza.name,
             image: mockedPizza.image,
-          });
-        expect(statusCode).toBe(422);
+          })
+          .expect(422);
         expect(body.statusCode).toBe(422);
         expect(body.message).toBe('Invalid value: [body / price] (undefined)');
       });
 
       it('string: should return a 422', async () => {
+        const { cookie } = await signup();
         const pizzaId = '6473dcfab93afd651b171a56';
-        const { body, statusCode } = await supertest(app)
+        const { body } = await supertest(app)
           .put(`/api/pizzas/${pizzaId}`)
+          .set('Cookie', cookie)
           .send({
             name: mockedPizza.name,
             image: mockedPizza.image,
             price: '5,99',
-          });
-        expect(statusCode).toBe(422);
+          })
+          .expect(422);
         expect(body.statusCode).toBe(422);
         expect(body.message).toBe('Invalid value: [body / price] (5,99)');
       });
@@ -348,15 +398,17 @@ describe('pizza', () => {
 
     describe('given the pizzaId is invalid', () => {
       it('should return a 422', async () => {
+        const { cookie } = await signup();
         const pizzaId = '6473dcfab93afd651b171a5';
-        const { body, statusCode } = await supertest(app)
+        const { body } = await supertest(app)
           .put(`/api/pizzas/${pizzaId}`)
+          .set('Cookie', cookie)
           .send({
             name: mockedPizza.name,
             image: mockedPizza.image,
             price: mockedPizza.price,
-          });
-        expect(statusCode).toBe(422);
+          })
+          .expect(422);
         expect(body.statusCode).toBe(422);
         expect(body.message).toBe(
           'Invalid ObjectId: [params / id] (6473dcfab93afd651b171a5)'
@@ -366,11 +418,13 @@ describe('pizza', () => {
 
     describe('given the pizza does not exist', () => {
       it('should return a 404 error', async () => {
+        const { cookie } = await signup();
         const pizzaId = '6473dcfab93afd651b171a56';
-        const { body, statusCode } = await supertest(app)
+        const { body } = await supertest(app)
           .put(`/api/pizzas/${pizzaId}`)
-          .send(mockedPizza);
-        expect(statusCode).toBe(404);
+          .set('Cookie', cookie)
+          .send(mockedPizza)
+          .expect(404);
         expect(body.statusCode).toBe(404);
         expect(body.message).toBe('Pizza not found');
       });
@@ -385,12 +439,14 @@ describe('pizza', () => {
           });
 
       it('should return a 500 error', async () => {
+        const { cookie } = await signup();
         const pizzaServiceMock = mockPizzaService();
         const pizzaId = '6473dcfab93afd651b171a56';
-        const { statusCode } = await supertest(app)
+        await supertest(app)
           .put(`/api/pizzas/${pizzaId}`)
-          .send(mockedPizza);
-        expect(statusCode).toBe(500);
+          .set('Cookie', cookie)
+          .send(mockedPizza)
+          .expect(500);
         expect(pizzaServiceMock).toBeCalled();
       });
     });
@@ -407,22 +463,35 @@ describe('pizza', () => {
 
     describe('given the deletion was successful', () => {
       it('should return a 200 response with the pizza', async () => {
+        const { cookie } = await signup();
         const pizza = await mockPizza();
-        const { body, statusCode } = await supertest(app).delete(
-          `/api/pizzas/${pizza.id}`
-        );
-        expect(statusCode).toBe(200);
+        const { body } = await supertest(app)
+          .delete(`/api/pizzas/${pizza.id}`)
+          .set('Cookie', cookie)
+          .expect(200);
         expect(body).toEqual({ message: 'Pizza deleted successfully' });
+      });
+    });
+
+    describe('given the user is not authorized', () => {
+      it('should return a 401', async () => {
+        const pizzaId = '6473dcfab93afd651b171a5';
+        const { body } = await supertest(app)
+          .delete(`/api/pizzas/${pizzaId}`)
+          .expect(401);
+        expect(body.statusCode).toBe(401);
+        expect(body.message).toBe('Unauthorized');
       });
     });
 
     describe('given the provided id is not an ObjectId', () => {
       it('should return a 422 error', async () => {
+        const { cookie } = await signup();
         const pizzaId = '6473dcfab93afd651b171a5';
-        const { body, statusCode } = await supertest(app).delete(
-          `/api/pizzas/${pizzaId}`
-        );
-        expect(statusCode).toBe(422);
+        const { body } = await supertest(app)
+          .delete(`/api/pizzas/${pizzaId}`)
+          .set('Cookie', cookie)
+          .expect(422);
         expect(body.statusCode).toBe(422);
         expect(body.message).toBe(
           'Invalid ObjectId: [params / id] (6473dcfab93afd651b171a5)'
@@ -432,11 +501,12 @@ describe('pizza', () => {
 
     describe('given the pizza does not exist', () => {
       it('should return a 404 error', async () => {
+        const { cookie } = await signup();
         const pizzaId = new mongoose.Types.ObjectId().toHexString();
-        const { body, statusCode } = await supertest(app).delete(
-          `/api/pizzas/${pizzaId}`
-        );
-        expect(statusCode).toBe(404);
+        const { body } = await supertest(app)
+          .delete(`/api/pizzas/${pizzaId}`)
+          .set('Cookie', cookie)
+          .expect(404);
         expect(body.statusCode).toBe(404);
         expect(body.message).toBe('Pizza not found');
       });
@@ -450,12 +520,13 @@ describe('pizza', () => {
             throw new Error('error');
           });
       it('should return a 500 error', async () => {
+        const { cookie } = await signup();
         const pizzaServiceMock = mockPizzaService();
         const pizzaId = new mongoose.Types.ObjectId().toHexString();
-        const { statusCode } = await supertest(app).delete(
-          `/api/pizzas/${pizzaId}`
-        );
-        expect(statusCode).toBe(500);
+        await supertest(app)
+          .delete(`/api/pizzas/${pizzaId}`)
+          .set('Cookie', cookie)
+          .expect(500);
         expect(pizzaServiceMock).toBeCalled();
       });
     });

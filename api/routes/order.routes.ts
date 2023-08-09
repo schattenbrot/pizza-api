@@ -10,6 +10,8 @@ import {
   updateOrderedPizzaStatusById,
 } from '../controllers/order.controller';
 import validators from '../validators';
+import { currentUser } from '../middlewares/currentUser';
+import { isAuth } from '../middlewares/isAuth';
 
 const router = Router();
 
@@ -100,7 +102,7 @@ router.post(
  *             schema:
  *               $ref: '#/components/schemas/ErrorResponse'
  */
-router.get('/', getAllOrders);
+router.get('/', currentUser, isAuth, getAllOrders);
 
 /**
  * @swagger
@@ -145,6 +147,7 @@ router.get('/', getAllOrders);
  */
 router.get(
   '/:id',
+  currentUser,
   validators.order.getOrderById,
   validators.validate,
   getOrderById
@@ -199,6 +202,8 @@ router.get(
  */
 router.put(
   '/:id',
+  currentUser,
+  isAuth,
   validators.order.updateOrder,
   validators.validate,
   updateOrderById
@@ -266,6 +271,8 @@ router.put(
  */
 router.patch(
   '/:id/status',
+  currentUser,
+  isAuth,
   validators.order.updateOrderedPizzaStatus,
   validators.validate,
   updateOrderedPizzaStatusById
@@ -314,6 +321,8 @@ router.patch(
  */
 router.delete(
   '/:id',
+  currentUser,
+  isAuth,
   validators.order.deleteOrder,
   validators.validate,
   deleteOrderById
