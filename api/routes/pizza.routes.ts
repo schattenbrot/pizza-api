@@ -18,7 +18,7 @@ const router = Router();
  * @swagger
  * /pizza:
  *   post:
- *     summary: Create a new Pizza
+ *     summary: Create a new Pizza (Requries auth)
  *     tags:
  *       - Pizza
  *     requestBody:
@@ -39,6 +39,12 @@ const router = Router();
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Pizza'
+ *       '401':
+ *         description: Unauthorized
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorUnauthorized'
  *       '422':
  *         description: Invalid value or input
  *         content:
@@ -144,7 +150,7 @@ router.get(
  * @swagger
  * /pizza/{id}:
  *   put:
- *     summary: Update a Pizza
+ *     summary: Update a Pizza (Requries auth)
  *     tags:
  *       - Pizza
  *     parameters:
@@ -172,6 +178,12 @@ router.get(
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Pizza'
+ *       '401':
+ *         description: Unauthorized
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorUnauthorized'
  *       '404':
  *         description: Pizza not found
  *         content:
@@ -204,7 +216,7 @@ router.put(
  * @swagger
  * /pizza/{id}:
  *   delete:
- *     summary: Delete a Pizza
+ *     summary: Delete a Pizza (Requries auth)
  *     tags:
  *       - Pizza
  *     parameters:
@@ -227,6 +239,12 @@ router.put(
  *                   type: string
  *                   description: The success message.
  *                   example: Pizza deleted successfully
+ *       '401':
+ *         description: Unauthorized
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorUnauthorized'
  *       '404':
  *         description: Pizza not found
  *         content:

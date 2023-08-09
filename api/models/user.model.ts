@@ -11,6 +11,38 @@ export interface IUser {
 
 export interface IUserDocument extends IUser, mongoose.Document {}
 
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     User:
+ *       type: object
+ *       properties:
+ *         email:
+ *           type: string
+ *           format: email
+ *         password:
+ *           type: string
+ *           format: password
+ *         resetToken:
+ *           type: string
+ *         resetTokenExpires:
+ *           type: number
+ *         avatar:
+ *           type: string
+ *           format: url
+ *         createdAt:
+ *           type: string
+ *           form: datetime
+ *         updatedAt:
+ *           type: string
+ *           form: datetime
+ *       required:
+ *         - email
+ *         - password
+ *         - avatar
+ */
+
 const UserSchema = new mongoose.Schema(
   {
     email: {

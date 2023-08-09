@@ -82,13 +82,19 @@ router.post(
  *       - Order
  *     responses:
  *       '200':
- *         description: Successful operation
+ *         description: Successful operation (Requires auth)
  *         content:
  *           application/json:
  *             schema:
  *               type: array
  *               items:
  *                 $ref: '#/components/schemas/Order'
+ *       '401':
+ *         description: Unauthorized
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorUnauthorized'
  *       '422':
  *         description: Unprocessable Entity
  *         content:
@@ -157,7 +163,7 @@ router.get(
  * @swagger
  * /order/{id}:
  *   put:
- *     summary: Update an Order by ID
+ *     summary: Update an Order by ID (Requires auth)
  *     tags:
  *       - Order
  *     parameters:
@@ -181,6 +187,12 @@ router.get(
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Order'
+ *       '401':
+ *         description: Unauthorized
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorUnauthorized'
  *       '404':
  *         description: Order not found
  *         content:
@@ -213,7 +225,7 @@ router.put(
  * @swagger
  * /order/{id}/status:
  *   patch:
- *     summary: Update the status of an Order by ID
+ *     summary: Update the status of an Order by ID (Requries auth)
  *     tags:
  *       - Order
  *     parameters:
@@ -250,6 +262,12 @@ router.put(
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Order'
+ *       '401':
+ *         description: Unauthorized
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorUnauthorized'
  *       '404':
  *         description: Order not found
  *         content:
@@ -282,7 +300,7 @@ router.patch(
  * @swagger
  * /order/{id}:
  *   delete:
- *     summary: Delete an Order by ID
+ *     summary: Delete an Order by ID (Requries auth)
  *     tags:
  *       - Order
  *     parameters:
@@ -299,7 +317,18 @@ router.patch(
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Order'
+ *               application/json:
+ *                 type: object
+ *                 properties:
+ *                    message:
+ *                      type: string
+ *                      example: Order deleted successfully
+ *       '401':
+ *         description: Unauthorized
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ErrorUnauthorized'
  *       '404':
  *         description: Order not found
  *         content:
