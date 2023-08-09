@@ -7,6 +7,8 @@ export interface IUser {
   resetToken?: string;
   resetTokenExpires?: number;
   avatar?: string;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 export interface IUserDocument extends IUser, mongoose.Document {}
